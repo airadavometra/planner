@@ -1,0 +1,12 @@
+.grid {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: min(1rem, 20px);
+}
+@media (max-width: 64rem) {
+  .grid {
+    display: flex;
+    flex-direction: column;
+  }
+}

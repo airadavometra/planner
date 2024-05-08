@@ -1,0 +1,38 @@
+.header {
+  width: 100%;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: min(4rem, 96px);
+}
+.title {
+  font-size: clamp(1.5rem, 1.2727rem + 1.1364vw, 2rem);
+}
+.buttonsContainer {
+  display: flex;
+  gap: min(1rem, 20px);
+}
+.arrowButton {
+  width: clamp(2rem, 1.5455rem + 2.2727vw, 3rem);
+  height: clamp(2rem, 1.5455rem + 2.2727vw, 3rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--text-color);
+  border-radius: 100%;
+}
+.arrowIcon {
+  width: clamp(1rem, 0.5455rem + 2.2727vw, 2rem);
+  color: var(--background-color);
+}
+.rotate180 {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 64rem) {
+  .header {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+}
