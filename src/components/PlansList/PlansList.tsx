@@ -2,7 +2,10 @@ import { FC } from "react";
 import { TaskListItem } from "../TaskListItem/TaskListItem";
 import s from "./PlansList.module.css";
 import { Task } from "../../types/task";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+import classNames from "classnames";
+import isToday from "dayjs/plugin/isToday";
+dayjs.extend(isToday);
 
 type PlansListProps = {
   title: string;
@@ -13,7 +16,7 @@ type PlansListProps = {
 export const PlansList: FC<PlansListProps> = ({ title, date, plans }) => {
   return (
     <div className={s.listContainer}>
-      <h2 className={s.title}>
+      <h2 className={classNames(s.title, { [s.currentDate]: date?.isToday() })}>
         {date && <span>{date.format("DD.MM")}</span>}
         <span className={s.secondaryTitle}>{title}</span>
       </h2>

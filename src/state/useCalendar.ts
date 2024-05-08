@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import dayjs, { Dayjs } from "dayjs";
 import en from "dayjs/locale/en";
-
 dayjs.locale({
   ...en,
   weekStart: 1,

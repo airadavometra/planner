@@ -9,6 +9,9 @@
 .title {
   font-size: clamp(1.5rem, 1.2727rem + 1.1364vw, 2rem);
 }
+.anotherWeek {
+  color: var(--blue);
+}
 .buttonsContainer {
   display: flex;
   gap: min(1rem, 20px);
