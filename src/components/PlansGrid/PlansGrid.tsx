@@ -8,7 +8,6 @@ export const PlansGrid = () => {
   return (
     <div className={s.grid}>
       <PlansList
-        title={"Mon"}
         date={monday}
         plans={[
           { title: "lalala", isCompleted: false },
@@ -31,7 +30,6 @@ export const PlansGrid = () => {
         ]}
       />
       <PlansList
-        title={"Tue"}
         date={monday.add(1, "day")}
         plans={[
           { title: "lalala", isCompleted: false },
@@ -42,7 +40,6 @@ export const PlansGrid = () => {
         ]}
       />
       <PlansList
-        title={"Wed"}
         date={monday.add(2, "day")}
         plans={[
           { title: "lalala", isCompleted: false },
@@ -53,7 +50,6 @@ export const PlansGrid = () => {
         ]}
       />
       <PlansList
-        title={"Thu"}
         date={monday.add(3, "day")}
         plans={[
           { title: "lalala", isCompleted: false },
@@ -64,7 +60,6 @@ export const PlansGrid = () => {
         ]}
       />
       <PlansList
-        title={"Fri"}
         date={monday.add(4, "day")}
         plans={[
           { title: "lalala", isCompleted: false },
@@ -75,7 +70,6 @@ export const PlansGrid = () => {
         ]}
       />
       <PlansList
-        title={"Sat"}
         date={monday.add(5, "day")}
         plans={[
           { title: "lalala", isCompleted: false },
@@ -86,7 +80,6 @@ export const PlansGrid = () => {
         ]}
       />
       <PlansList
-        title={"Sun"}
         date={monday.add(6, "day")}
         plans={[
           { title: "lalala", isCompleted: false },

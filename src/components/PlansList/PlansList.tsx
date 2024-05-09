@@ -8,7 +8,7 @@ import isToday from "dayjs/plugin/isToday";
 dayjs.extend(isToday);
 
 type PlansListProps = {
-  title: string;
+  title?: string;
   date?: Dayjs;
   plans: Task[];
 };
@@ -17,8 +17,13 @@ export const PlansList: FC<PlansListProps> = ({ title, date, plans }) => {
   return (
     <div className={s.listContainer}>
       <h2 className={classNames(s.title, { [s.currentDate]: date?.isToday() })}>
-        {date && <span>{date.format("DD.MM")}</span>}
-        <span className={s.secondaryTitle}>{title}</span>
+        {date && (
+          <>
+            <span>{date.format("DD.MM")}</span>
+            <span className={s.secondaryTitle}>{date.format("ddd")}</span>
+          </>
+        )}
+        {title && <span>{title}</span>}
       </h2>
       {plans.map((item) => (
         <TaskListItem key={item.title} task={item} />
