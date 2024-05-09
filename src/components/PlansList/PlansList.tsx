@@ -9,10 +9,11 @@ import { NewTaskButton } from "../NewTaskButton/NewTaskButton";
 dayjs.extend(isToday);
 
 const plans: Task[] = [
-  { title: "lalala", isCompleted: false },
+  { title: "lalala", isCompleted: false, date: dayjs() },
   {
     title: "lalalalalalalalalalalalalalalalalalalalalalalala",
     isCompleted: true,
+    date: dayjs(),
   },
 ];
 

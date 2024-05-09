@@ -27,13 +27,13 @@
 }
 .arrowIcon {
   width: clamp(1rem, 0.5455rem + 2.2727vw, 2rem);
-  margin-left: -0.25rem;
+  margin-left: clamp(-0.125rem, -0.0682rem + -0.2841vw, -0.25rem);
   color: var(--background-color);
 }
 .rotate180 {
   transform: rotate(180deg);
   margin: 0;
-  margin-right: -0.25rem;
+  margin-right: clamp(-0.125rem, -0.0682rem + -0.2841vw, -0.25rem);
 }
 
 @media (max-width: 64rem) {

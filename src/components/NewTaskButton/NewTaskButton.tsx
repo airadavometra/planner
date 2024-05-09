@@ -18,7 +18,7 @@ export const NewTaskButton: FC<NewTaskButtonProps> = ({ plansCount }) => {
           {Array(extraRowsCount)
             .fill(0)
             .map((_, index) => (
-              <div key={index} className={s.taskRow} tabIndex={-1}>
+              <div key={index} className={s.taskRow} aria-hidden="true">
                 Extra row
               </div>
             ))}
