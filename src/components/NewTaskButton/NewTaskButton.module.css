@@ -1,0 +1,8 @@
+.taskRow {
+  width: 100%;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  text-align: start;
+  color: transparent;
+  border-bottom: 1px solid var(--text-color-transparent);
+}

@@ -5,15 +5,23 @@ import { Task } from "../../types/task";
 import dayjs, { Dayjs } from "dayjs";
 import classNames from "classnames";
 import isToday from "dayjs/plugin/isToday";
+import { NewTaskButton } from "../NewTaskButton/NewTaskButton";
 dayjs.extend(isToday);
+
+const plans: Task[] = [
+  { title: "lalala", isCompleted: false },
+  {
+    title: "lalalalalalalalalalalalalalalalalalalalalalalala",
+    isCompleted: true,
+  },
+];
 
 type PlansListProps = {
   title?: string;
   date?: Dayjs;
-  plans: Task[];
 };
 
-export const PlansList: FC<PlansListProps> = ({ title, date, plans }) => {
+export const PlansList: FC<PlansListProps> = ({ title, date }) => {
   return (
     <div className={s.listContainer}>
       <h2 className={classNames(s.title, { [s.currentDate]: date?.isToday() })}>
@@ -28,6 +36,7 @@ export const PlansList: FC<PlansListProps> = ({ title, date, plans }) => {
       {plans.map((item) => (
         <TaskListItem key={item.title} task={item} />
       ))}
+      <NewTaskButton plansCount={plans.length} />
     </div>
   );
 };
