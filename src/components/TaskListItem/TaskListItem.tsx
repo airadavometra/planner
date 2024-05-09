@@ -4,6 +4,7 @@ import { Check } from "../../icons/Check";
 import classNames from "classnames";
 import { Task } from "../../types/task";
 import { TaskModal } from "../TaskModal/TaskModal";
+import { Button } from "@headlessui/react";
 
 type TaskListItemProps = {
   task: Task;
@@ -15,21 +16,21 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
   return (
     <>
       <div className={s.container}>
-        <button
+        <Button
           className={classNames(s.textButton, {
             [s.checked]: task.isCompleted,
           })}
           onClick={() => setIsModalOpen(true)}
         >
           {task.title}
-        </button>
-        <button
+        </Button>
+        <Button
           className={classNames(s.checkButton, {
             [s.checked]: task.isCompleted,
           })}
         >
           <Check className={s.checkIcon} />
-        </button>
+        </Button>
       </div>
       {isModalOpen && (
         <TaskModal

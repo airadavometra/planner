@@ -22,6 +22,11 @@
   border-radius: min(1rem, 20px);
   background-color: var(--lavender);
 }
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: min(1rem, 20px);
+}
 .header {
   width: 100%;
   display: flex;
