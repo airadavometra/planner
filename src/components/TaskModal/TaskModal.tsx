@@ -9,6 +9,9 @@ import { Repeat } from "../../icons/Repeat";
 import { Color } from "../../icons/Color";
 import classNames from "classnames";
 import dayjs from "dayjs";
+import { addDoc, collection } from "firebase/firestore";
+import { auth, db } from "../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 type TaskModalProps = {
   task?: Task;
@@ -17,7 +20,26 @@ type TaskModalProps = {
 };
 
 export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
+  const [user] = useAuthState(auth);
+
   const [taskTitle, setTaskTitle] = useState<string>(task?.title || "");
+
+  const handleSave = async () => {
+    if (user) {
+      if (task) {
+        // TODO update existing record
+      } else {
+        await addDoc(collection(db, "tasks"), {
+          title: taskTitle,
+          date: dayjs().format("DD.MM.YYYY"),
+          isCompleted: false,
+          order: 0,
+          color: "red",
+          uid: user.uid,
+        });
+      }
+    }
+  };
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
@@ -50,10 +72,12 @@ export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
                   [s.checked]: task?.isCompleted,
                 })}
                 autoFocus
+                type="text"
                 value={taskTitle}
                 onChange={(e) => {
                   setTaskTitle(e.target.value);
                 }}
+                onBlur={handleSave}
               />
               <Button
                 className={classNames(s.actionButton, {

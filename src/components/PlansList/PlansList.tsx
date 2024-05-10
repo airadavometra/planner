@@ -20,7 +20,7 @@ export const PlansList: FC<PlansListProps> = ({ title, date }) => {
     (task) =>
       (dayjs().isAfter(date) && task.date.isSame(date) && task.isCompleted) ||
       (date?.isToday() && task.date.isBefore(date) && !task.isCompleted) ||
-      (dayjs().isBefore(date) && task.date.isSame(date))
+      ((dayjs().isBefore(date) || date?.isToday()) && task.date.isSame(date))
   );
 
   return (
