@@ -21,7 +21,7 @@ export const Main = () => {
     ? query(collection(db, "tasks"), where("uid", "==", user?.uid || ""))
     : null;
 
-  const [value, loading, error] = useCollectionData(dataQuery);
+  const [value /*loading, error*/] = useCollectionData(dataQuery);
 
   useEffect(() => {
     if (value) {
