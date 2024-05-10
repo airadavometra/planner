@@ -5,6 +5,7 @@ import s from "./Header.module.css";
 import { useCalendarStore } from "../../state/useCalendar";
 import dayjs from "dayjs";
 import { Button } from "@headlessui/react";
+import { AuthButton } from "../AuthButton/AuthButton";
 
 export const Header = () => {
   const { monday, goBack, goForward, reset } = useCalendarStore((state) => ({
@@ -25,6 +26,7 @@ export const Header = () => {
           <Button onClick={reset}>{monday.format("MMMM YYYY")}</Button>
         </h1>
         <div className={s.buttonsContainer}>
+          <AuthButton className={s.authButton} />
           <Button className={s.arrowButton} onClick={goBack}>
             <Arrow className={s.arrowIcon} />
           </Button>
