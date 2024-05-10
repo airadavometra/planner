@@ -27,6 +27,7 @@ export const AuthButton: FC<AuthButtonProps> = ({ className }) => {
 
   const handleLogOut = async () => {
     auth.signOut();
+    window.location.reload();
   };
 
   return (
