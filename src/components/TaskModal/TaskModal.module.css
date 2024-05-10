@@ -21,6 +21,7 @@
   inset: 0;
   border-radius: min(1rem, 20px);
   background-color: var(--lavender);
+  color: var(--black);
 }
 .content {
   display: flex;
@@ -54,7 +55,7 @@
   width: 100%;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--text-color-transparent);
+  border-bottom: 1px solid var(--black-transparent);
 }
 .input {
   width: 100%;
@@ -64,6 +65,7 @@
   font-size: clamp(1.125rem, 1.0682rem + 0.2841vw, 1.25rem);
   font-weight: 600;
   background-color: transparent;
+  color: var(--black);
   border: none;
   resize: none;
 }

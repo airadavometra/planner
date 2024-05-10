@@ -7,6 +7,8 @@
   --title-font: "Raleway", Arial, serif;
   --black: #000000;
   --white: #ffffff;
+  --black-transparent: #0000001a;
+  --white-transparent: #ffffff1a;
   --blue: #3e7bff;
 
   --pink: #e00052;
@@ -18,9 +20,9 @@
   --lilac: #d85dfd;
 
   --text-color: var(--black);
-  --text-color-transparent: #0000001a;
+  --text-color-transparent: var(--black-transparent);
   --background-color: var(--white);
-  --background-color-transparent: #ffffff1a;
+  --background-color-transparent: var(--white-transparent);
 }
 html,
 body,
@@ -40,9 +42,9 @@ body {
 @media (prefers-color-scheme: dark) {
   body {
     --text-color: var(--white);
-    --text-color-transparent: #ffffff1a;
+    --text-color-transparent: var(--white-transparent);
     --background-color: var(--black);
-    --background-color-transparent: #0000001a;
+    --background-color-transparent: var(--black-transparent);
   }
 }
 
