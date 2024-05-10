@@ -13,9 +13,9 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(customParseFormat);
 
 export const Main = () => {
-  const [user] = useAuthState(auth);
-
   const setTasks = useTasksStore((state) => state.setTasks);
+
+  const [user] = useAuthState(auth);
 
   const dataQuery = user
     ? query(collection(db, "tasks"), where("uid", "==", user?.uid || ""))
