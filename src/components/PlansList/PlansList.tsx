@@ -16,7 +16,12 @@ type PlansListProps = {
 export const PlansList: FC<PlansListProps> = ({ title, date }) => {
   const tasks = useTasksStore((state) => state.tasks);
 
-  const plans = tasks.filter((task) => task.date.isSame(date));
+  const plans = tasks.filter(
+    (task) =>
+      (dayjs().isAfter(date) && task.date.isSame(date) && task.isCompleted) ||
+      (date?.isToday() && task.date.isBefore(date) && !task.isCompleted) ||
+      (dayjs().isBefore(date) && task.date.isSame(date))
+  );
 
   return (
     <div className={s.listContainer}>
