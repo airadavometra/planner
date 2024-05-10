@@ -33,7 +33,13 @@ export const AuthButton: FC<AuthButtonProps> = ({ className }) => {
     <>
       {user && (
         <div className={s.button}>
-          {user.displayName ? (
+          {user.photoURL ? (
+            <img
+              className={s.photo}
+              src={user.photoURL}
+              referrerPolicy="no-referrer"
+            />
+          ) : user.displayName ? (
             getInitials(user.displayName)
           ) : (
             <User className={s.icon} />

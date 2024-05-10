@@ -11,3 +11,6 @@
 .icon {
   width: clamp(1rem, 0.7727rem + 1.1364vw, 1.5rem);
 }
+.photo {
+  border-radius: 100%;
+}
