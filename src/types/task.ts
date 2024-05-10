@@ -5,6 +5,8 @@ export type Task = {
   description?: string;
   isCompleted: boolean;
   date: Dayjs;
+  uid: string;
+  //order
   //color
   //schedule
 };

@@ -1,21 +1,12 @@
 import { FC } from "react";
 import { TaskListItem } from "../TaskListItem/TaskListItem";
 import s from "./PlansList.module.css";
-import { Task } from "../../types/task";
 import dayjs, { Dayjs } from "dayjs";
 import classNames from "classnames";
 import isToday from "dayjs/plugin/isToday";
 import { NewTaskButton } from "../NewTaskButton/NewTaskButton";
+import { useTasksStore } from "../../state/useTasks";
 dayjs.extend(isToday);
-
-const plans: Task[] = [
-  { title: "lalala", isCompleted: false, date: dayjs() },
-  {
-    title: "lalalalalalalalalalalalalalalalalalalalalalalala",
-    isCompleted: true,
-    date: dayjs(),
-  },
-];
 
 type PlansListProps = {
   title?: string;
@@ -23,6 +14,10 @@ type PlansListProps = {
 };
 
 export const PlansList: FC<PlansListProps> = ({ title, date }) => {
+  const tasks = useTasksStore((state) => state.tasks);
+
+  const plans = tasks.filter((task) => task.date.isSame(date));
+
   return (
     <div className={s.listContainer}>
       <h2 className={classNames(s.title, { [s.currentDate]: date?.isToday() })}>

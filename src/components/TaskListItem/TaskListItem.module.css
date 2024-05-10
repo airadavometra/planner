@@ -17,6 +17,10 @@
 .checkButton {
   flex-shrink: 0;
   padding: 0.5rem;
+  opacity: 0%;
+}
+.checkButton:hover {
+  opacity: 100%;
 }
 .checkIcon {
   width: 1rem;
