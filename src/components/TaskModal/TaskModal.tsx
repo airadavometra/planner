@@ -8,13 +8,13 @@ import { Delete } from "../../icons/Delete";
 import { Repeat } from "../../icons/Repeat";
 import { Color } from "../../icons/Color";
 import classNames from "classnames";
-import dayjs from "dayjs";
-import { addDoc, collection } from "firebase/firestore";
+import { Dayjs } from "dayjs";
+import { updateDoc, doc, deleteDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 type TaskModalProps = {
-  task?: Task;
+  task: Task;
   isOpen: boolean;
   onClose: () => void;
 };
@@ -22,23 +22,34 @@ type TaskModalProps = {
 export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
   const [user] = useAuthState(auth);
 
-  const [taskTitle, setTaskTitle] = useState<string>(task?.title || "");
+  const [taskTitle, setTaskTitle] = useState<string>(task.title);
+  const [taskDate /*setTaskDate*/] = useState<Dayjs>(task.date);
+  const [taskIsCompleted, setTaskIsCompleted] = useState<boolean>(
+    task.isCompleted
+  );
 
-  const handleSave = async () => {
-    if (user) {
-      if (task) {
-        // TODO update existing record
-      } else {
-        await addDoc(collection(db, "tasks"), {
-          title: taskTitle,
-          date: dayjs().format("DD.MM.YYYY"),
-          isCompleted: false,
-          order: 0,
-          color: "red",
-          uid: user.uid,
-        });
-      }
+  const handleSaveTitle = async () => {
+    if (user && taskTitle.length > 0) {
+      const taskRef = doc(db, "tasks", task.id);
+
+      await updateDoc(taskRef, {
+        title: taskTitle,
+      });
+
+      // await setDoc(collection(db, "tasks", task.id), {
+      //   title: taskTitle,
+      //   date: dayjs().format("DD.MM.YYYY"),
+      //   isCompleted: false,
+      //   order: 0,
+      //   color: "red",
+      //   uid: user.uid,
+      //   id: task.id,
+      // });
     }
+  };
+
+  const handleDeleteTask = async () => {
+    await deleteDoc(doc(db, "tasks", task.id));
   };
 
   return (
@@ -52,10 +63,10 @@ export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
             <div className={s.header}>
               <Button className={s.dateButton}>
                 <Calendar className={s.buttonIcon} />
-                <span>{(task?.date || dayjs()).format("ddd, D MMM YYYY")}</span>
+                <span>{taskDate.format("ddd, D MMM YYYY")}</span>
               </Button>
               <div>
-                <Button className={s.actionButton}>
+                <Button className={s.actionButton} onClick={handleDeleteTask}>
                   <Delete className={s.buttonIcon} />
                 </Button>
                 <Button className={s.actionButton}>
@@ -69,7 +80,7 @@ export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
             <div className={s.inputSection}>
               <Input
                 className={classNames(s.input, {
-                  [s.checked]: task?.isCompleted,
+                  [s.checked]: taskIsCompleted,
                 })}
                 autoFocus
                 type="text"
@@ -77,12 +88,18 @@ export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
                 onChange={(e) => {
                   setTaskTitle(e.target.value);
                 }}
-                onBlur={handleSave}
+                onBlur={handleSaveTitle}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    handleSaveTitle;
+                  }
+                }}
               />
               <Button
                 className={classNames(s.actionButton, {
-                  [s.checked]: task?.isCompleted,
+                  [s.checked]: taskIsCompleted,
                 })}
+                onClick={() => setTaskIsCompleted((prevValue) => !prevValue)}
               >
                 <Check className={s.buttonIcon} />
               </Button>

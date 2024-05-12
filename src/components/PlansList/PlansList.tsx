@@ -4,24 +4,26 @@ import s from "./PlansList.module.css";
 import dayjs, { Dayjs } from "dayjs";
 import classNames from "classnames";
 import isToday from "dayjs/plugin/isToday";
-import { NewTaskButton } from "../NewTaskButton/NewTaskButton";
+import { NewTaskInput } from "../NewTaskInput/NewTaskInput";
 import { useTasksStore } from "../../state/useTasks";
 dayjs.extend(isToday);
 
 type PlansListProps = {
   title?: string;
-  date?: Dayjs;
+  date: Dayjs;
 };
 
 export const PlansList: FC<PlansListProps> = ({ title, date }) => {
   const tasks = useTasksStore((state) => state.tasks);
 
-  const plans = tasks.filter(
-    (task) =>
-      (dayjs().isAfter(date) && task.date.isSame(date) && task.isCompleted) ||
-      (date?.isToday() && task.date.isBefore(date) && !task.isCompleted) ||
-      ((dayjs().isBefore(date) || date?.isToday()) && task.date.isSame(date))
-  );
+  // const plans = tasks.filter(
+  //   (task) =>
+  //     (dayjs().isAfter(date) && task.date.isSame(date) && task.isCompleted) ||
+  //     (date?.isToday() && task.date.isBefore(date) && !task.isCompleted) ||
+  //     ((dayjs().isBefore(date) || date?.isToday()) && task.date.isSame(date))
+  // );
+
+  const plans = tasks.filter((task) => task.date.isSame(date));
 
   return (
     <div className={s.listContainer}>
@@ -37,7 +39,11 @@ export const PlansList: FC<PlansListProps> = ({ title, date }) => {
       {plans.map((item) => (
         <TaskListItem key={item.title} task={item} />
       ))}
-      <NewTaskButton plansCount={plans.length} />
+      <NewTaskInput
+        plansCount={plans.length}
+        date={date}
+        nextTaskOrder={plans.length}
+      />
     </div>
   );
 };
