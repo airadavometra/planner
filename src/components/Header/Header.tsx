@@ -16,14 +16,16 @@ export const Header = () => {
   }));
 
   return (
-    <header>
+    <header className={s.headerContainer}>
       <WidthContainer className={s.header}>
         <h1
           className={classNames(s.title, {
             [s.anotherWeek]: monday.diff(dayjs().startOf("week")) !== 0,
           })}
         >
-          <Button onClick={reset}>{monday.format("MMMM YYYY")}</Button>
+          <Button className={s.dateButton} onClick={reset}>
+            {monday.format("MMM YYYY")}
+          </Button>
         </h1>
         <div className={s.buttonsContainer}>
           <AuthButton className={s.authButton} />

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useRef } from "react";
 import { TaskListItem } from "../TaskListItem/TaskListItem";
 import s from "./PlansList.module.css";
 import dayjs, { Dayjs } from "dayjs";
@@ -16,6 +16,14 @@ type PlansListProps = {
 export const PlansList: FC<PlansListProps> = ({ title, date }) => {
   const tasks = useTasksStore((state) => state.tasks);
 
+  const plansListRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (date.isToday()) {
+      plansListRef.current?.scrollIntoView();
+    }
+  }, [date]);
+
   // const plans = tasks.filter(
   //   (task) =>
   //     (dayjs().isAfter(date) && task.date.isSame(date) && task.isCompleted) ||
@@ -26,7 +34,7 @@ export const PlansList: FC<PlansListProps> = ({ title, date }) => {
   const plans = tasks.filter((task) => task.date.isSame(date));
 
   return (
-    <div className={s.listContainer}>
+    <div ref={plansListRef} className={s.listContainer}>
       <h2 className={classNames(s.title, { [s.currentDate]: date?.isToday() })}>
         {date && (
           <>

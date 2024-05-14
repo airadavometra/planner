@@ -1,13 +1,22 @@
+.headerContainer {
+  position: sticky;
+  top: 0;
+  background-color: var(--background-color);
+  z-index: 2;
+}
 .header {
   width: 100%;
   padding-top: 24px;
   padding-bottom: 24px;
   display: flex;
   justify-content: space-between;
-  gap: min(4rem, 96px);
 }
 .title {
   font-size: clamp(1.5rem, 1.2727rem + 1.1364vw, 2rem);
+}
+.dateButton {
+  text-align: start;
+  white-space: nowrap;
 }
 .anotherWeek {
   color: var(--blue);
@@ -43,5 +52,8 @@
   .header {
     padding-top: 16px;
     padding-bottom: 16px;
+  }
+  .authButton {
+    margin-right: 0;
   }
 }

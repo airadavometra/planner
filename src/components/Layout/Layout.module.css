@@ -4,4 +4,11 @@
   display: flex;
   flex-direction: column;
   gap: min(1rem, 20px);
+  position: relative;
+}
+
+@media (max-width: 64rem) {
+  .layout {
+    height: fit-content;
+  }
 }
