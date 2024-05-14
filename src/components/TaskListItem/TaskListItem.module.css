@@ -17,10 +17,10 @@
 .checkButton {
   flex-shrink: 0;
   padding: 0.5rem;
-  opacity: 0%;
+  color: var(--background-color);
 }
 .checkButton:hover {
-  opacity: 100%;
+  color: var(--text-color);
 }
 .checkIcon {
   width: 1rem;
