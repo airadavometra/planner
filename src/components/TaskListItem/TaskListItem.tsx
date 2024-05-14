@@ -89,7 +89,10 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
           title={title}
           onChangeTitle={setTitle}
           date={date}
-          onChangeDate={setDate}
+          onChangeDate={(newDate: string) => {
+            const isValid = newDate.length > 0 && dayjs(date).isValid();
+            setDate(isValid ? newDate : task.date.format("YYYY-MM-DD"));
+          }}
           isCompleted={isCompleted}
           onToggleIsCompleted={() => setIsCompleted((prev) => !prev)}
           onDelete={handleDeleteTask}
