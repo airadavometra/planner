@@ -5,6 +5,8 @@
   text-align: start;
   border: none;
   border-bottom: 1px solid var(--text-color-transparent);
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 .extraRow {
   color: transparent;

@@ -39,12 +39,42 @@
   justify-content: space-between;
   gap: min(4rem, 72px);
 }
-.dateButton {
+.inputContainer {
+  position: relative;
   display: flex;
   align-items: center;
   gap: min(0.5rem, 16px);
   font-size: clamp(0.875rem, 0.8182rem + 0.2841vw, 1rem);
   font-weight: 500;
+}
+.inputLabel {
+  display: flex;
+  align-items: center;
+  gap: min(0.5rem, 16px);
+  white-space: nowrap;
+}
+.dateInputContainer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+.dateInput {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border: none;
+  background: transparent;
+  color: transparent;
+}
+.dateInput::-webkit-calendar-picker-indicator {
+  width: auto;
+  height: auto;
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
 }
 .buttonIcon {
   flex-shrink: 0;

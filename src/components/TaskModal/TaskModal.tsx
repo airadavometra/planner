@@ -1,12 +1,20 @@
 import { FC } from "react";
 import s from "./TaskModal.module.css";
 import { Check } from "../../icons/Check";
-import { Button, Dialog, DialogPanel, Input } from "@headlessui/react";
-//import { Calendar } from "../../icons/Calendar";
+import {
+  Button,
+  Dialog,
+  DialogPanel,
+  Field,
+  Input,
+  Label,
+} from "@headlessui/react";
+import { Calendar } from "../../icons/Calendar";
 import { Delete } from "../../icons/Delete";
 import { Repeat } from "../../icons/Repeat";
 import { Color } from "../../icons/Color";
 import classNames from "classnames";
+import dayjs from "dayjs";
 
 type TaskModalProps = {
   title: string;
@@ -40,17 +48,24 @@ export const TaskModal: FC<TaskModalProps> = ({
         <DialogPanel className={s.modal}>
           <div className={s.content}>
             <div className={s.header}>
-              <Input
-                className={s.dateButton}
-                type="date"
-                value={date}
-                onChange={(e) => {
-                  onChangeDate(e.target.value);
-                }}
-              />
-              {/* <Calendar className={s.buttonIcon} />
-                <span>{taskDate.format("ddd, D MMM YYYY")}</span>
-              </Button> */}
+              <Field className={s.inputContainer}>
+                <Label className={s.inputLabel}>
+                  <Calendar className={s.buttonIcon} />
+                  <span>
+                    {dayjs(date, "YYYY-MM-DD").format("ddd, D MMM YYYY")}
+                  </span>
+                </Label>
+                <div className={s.dateInputContainer}>
+                  <Input
+                    className={s.dateInput}
+                    type="date"
+                    value={date}
+                    onChange={(e) => {
+                      onChangeDate(e.target.value);
+                    }}
+                  />
+                </div>
+              </Field>
               <div>
                 <Button className={s.actionButton} onClick={onDelete}>
                   <Delete className={s.buttonIcon} />

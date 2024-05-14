@@ -39,14 +39,6 @@ body {
   color: var(--text-color);
   background-color: var(--background-color);
 }
-@media (prefers-color-scheme: dark) {
-  body {
-    --text-color: var(--white);
-    --text-color-transparent: var(--white-transparent);
-    --background-color: var(--black);
-    --background-color-transparent: var(--black-transparent);
-  }
-}
 
 button {
   padding: 0;
