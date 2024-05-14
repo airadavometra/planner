@@ -16,9 +16,13 @@
   height: fit-content;
   max-width: 512px;
   margin: 128px auto;
-  padding: min(2rem, 40px);
   position: fixed;
   inset: 0;
+}
+.modal {
+  width: 100%;
+  height: 100%;
+  padding: min(2rem, 40px);
   border-radius: min(1rem, 20px);
   background-color: var(--lavender);
   color: var(--black);
@@ -76,8 +80,10 @@
 
 @media (max-width: 64rem) {
   .modalContainer {
-    padding: min(1rem, 20px);
     margin: 64px auto;
+  }
+  .modal {
+    padding: min(1rem, 20px);
   }
   .header {
     gap: min(1rem, 20px);

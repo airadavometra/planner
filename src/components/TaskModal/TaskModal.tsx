@@ -1,72 +1,58 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import s from "./TaskModal.module.css";
 import { Check } from "../../icons/Check";
-import { Task } from "../../types/task";
 import { Button, Dialog, DialogPanel, Input } from "@headlessui/react";
 import { Calendar } from "../../icons/Calendar";
 import { Delete } from "../../icons/Delete";
 import { Repeat } from "../../icons/Repeat";
 import { Color } from "../../icons/Color";
 import classNames from "classnames";
-import { Dayjs } from "dayjs";
-import { updateDoc, doc, deleteDoc } from "firebase/firestore";
-import { auth, db } from "../../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 type TaskModalProps = {
-  task: Task;
+  title: string;
+  onChangeTitle: (newTitle: string) => void;
+  date: string;
+  onChangeDate: (newDate: string) => void;
+  isCompleted: boolean;
+  onToggleIsCompleted: () => void;
+  onDelete: () => void;
   isOpen: boolean;
   onClose: () => void;
 };
 
-export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
-  const [user] = useAuthState(auth);
-
-  const [taskTitle, setTaskTitle] = useState<string>(task.title);
-  const [taskDate /*setTaskDate*/] = useState<Dayjs>(task.date);
-  const [taskIsCompleted, setTaskIsCompleted] = useState<boolean>(
-    task.isCompleted
-  );
-
-  const handleSaveTitle = async () => {
-    if (user && taskTitle.length > 0) {
-      const taskRef = doc(db, "tasks", task.id);
-
-      await updateDoc(taskRef, {
-        title: taskTitle,
-      });
-
-      // await setDoc(collection(db, "tasks", task.id), {
-      //   title: taskTitle,
-      //   date: dayjs().format("DD.MM.YYYY"),
-      //   isCompleted: false,
-      //   order: 0,
-      //   color: "red",
-      //   uid: user.uid,
-      //   id: task.id,
-      // });
-    }
-  };
-
-  const handleDeleteTask = async () => {
-    await deleteDoc(doc(db, "tasks", task.id));
-  };
-
+export const TaskModal: FC<TaskModalProps> = ({
+  title,
+  onChangeTitle,
+  date,
+  onChangeDate,
+  isCompleted,
+  onToggleIsCompleted,
+  onDelete,
+  isOpen,
+  onClose,
+}) => {
   return (
     <Dialog open={isOpen} onClose={onClose}>
       <div className={s.backdropFilter} aria-hidden="true">
         <div className={s.backdropColor} aria-hidden="true" />
       </div>
       <div className={s.modalContainer}>
-        <DialogPanel>
+        <DialogPanel className={s.modal}>
           <div className={s.content}>
             <div className={s.header}>
-              <Button className={s.dateButton}>
-                <Calendar className={s.buttonIcon} />
+              <Input
+                className={s.dateButton}
+                type="date"
+                value={date}
+                onChange={(e) => {
+                  onChangeDate(e.target.value);
+                }}
+              />
+              {/* <Calendar className={s.buttonIcon} />
                 <span>{taskDate.format("ddd, D MMM YYYY")}</span>
-              </Button>
+              </Button> */}
               <div>
-                <Button className={s.actionButton} onClick={handleDeleteTask}>
+                <Button className={s.actionButton} onClick={onDelete}>
                   <Delete className={s.buttonIcon} />
                 </Button>
                 <Button className={s.actionButton}>
@@ -80,26 +66,20 @@ export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
             <div className={s.inputSection}>
               <Input
                 className={classNames(s.input, {
-                  [s.checked]: taskIsCompleted,
+                  [s.checked]: isCompleted,
                 })}
                 autoFocus
                 type="text"
-                value={taskTitle}
+                value={title}
                 onChange={(e) => {
-                  setTaskTitle(e.target.value);
-                }}
-                onBlur={handleSaveTitle}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    handleSaveTitle;
-                  }
+                  onChangeTitle(e.target.value);
                 }}
               />
               <Button
                 className={classNames(s.actionButton, {
-                  [s.checked]: taskIsCompleted,
+                  [s.checked]: isCompleted,
                 })}
-                onClick={() => setTaskIsCompleted((prevValue) => !prevValue)}
+                onClick={onToggleIsCompleted}
               >
                 <Check className={s.buttonIcon} />
               </Button>

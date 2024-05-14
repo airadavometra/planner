@@ -1,10 +1,14 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import s from "./TaskListItem.module.css";
 import { Check } from "../../icons/Check";
 import classNames from "classnames";
 import { Task } from "../../types/task";
 import { TaskModal } from "../TaskModal/TaskModal";
 import { Button } from "@headlessui/react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../../firebase";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import dayjs from "dayjs";
 
 type TaskListItemProps = {
   task: Task;
@@ -12,6 +16,48 @@ type TaskListItemProps = {
 
 export const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const [user] = useAuthState(auth);
+
+  const [title, setTitle] = useState<string>(task.title);
+  const [date, setDate] = useState<string>(task.date.format("YYYY-MM-DD"));
+  const [isCompleted, setIsCompleted] = useState<boolean>(task.isCompleted);
+
+  useEffect(() => {
+    if (!isModalOpen) {
+      const saveData = async () => {
+        if (user) {
+          const taskRef = doc(db, "tasks", task.id);
+
+          const newTaskTitle = title.trim();
+          const newDate = dayjs(date, "YYYY-MM-DD");
+
+          await updateDoc(taskRef, {
+            title: newTaskTitle.length > 0 ? newTaskTitle : task.title,
+            date: newDate.format("DD.MM.YYYY"),
+            isCompleted: isCompleted,
+          });
+        }
+      };
+      saveData();
+    }
+  }, [isModalOpen]);
+
+  const handleDeleteTask = async () => {
+    if (user) {
+      await deleteDoc(doc(db, "tasks", task.id));
+    }
+  };
+
+  const handleCompleteTask = async (isCompleted: boolean) => {
+    if (user) {
+      const taskRef = doc(db, "tasks", task.id);
+
+      await updateDoc(taskRef, {
+        isCompleted: isCompleted,
+      });
+    }
+  };
 
   return (
     <>
@@ -28,13 +74,25 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
           className={classNames(s.checkButton, {
             [s.checked]: task.isCompleted,
           })}
+          onClick={() => {
+            setIsCompleted((prev) => {
+              handleCompleteTask(!prev);
+              return !prev;
+            });
+          }}
         >
           <Check className={s.checkIcon} />
         </Button>
       </div>
       {isModalOpen && (
         <TaskModal
-          task={task}
+          title={title}
+          onChangeTitle={setTitle}
+          date={date}
+          onChangeDate={setDate}
+          isCompleted={isCompleted}
+          onToggleIsCompleted={() => setIsCompleted((prev) => !prev)}
+          onDelete={handleDeleteTask}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         />

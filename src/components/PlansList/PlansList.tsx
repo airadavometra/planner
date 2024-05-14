@@ -22,7 +22,7 @@ export const PlansList: FC<PlansListProps> = ({ title, date }) => {
     if (date.isToday()) {
       plansListRef.current?.scrollIntoView();
     }
-  }, [date]);
+  }, []);
 
   // const plans = tasks.filter(
   //   (task) =>
