@@ -1,13 +1,13 @@
 import { FC, useRef, useState } from "react";
 import s from "./NewTaskInput.module.css";
 import { Input } from "@headlessui/react";
-import { useTasksStore } from "../../state/useTasks";
 import classNames from "classnames";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { getDefaultTask } from "../../utils/getDefaultTask";
 import { Dayjs } from "dayjs";
+import { useMaxTasksCount } from "../../hooks/useMaxTasksCount";
 
 type NewTaskInputProps = {
   plansCount: number;
@@ -21,7 +21,7 @@ export const NewTaskInput: FC<NewTaskInputProps> = ({
   nextTaskOrder,
 }) => {
   const [user] = useAuthState(auth);
-  const maxTasksCount = useTasksStore((state) => state.maxTasksCount);
+  const maxTasksCount = useMaxTasksCount();
 
   const [taskTitle, setTaskTitle] = useState<string>("");
 

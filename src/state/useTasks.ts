@@ -9,7 +9,6 @@ dayjs.locale({
 
 type TasksState = {
   tasks: Task[];
-  maxTasksCount: number;
 };
 
 type TasksActions = {
@@ -63,7 +62,6 @@ const initialState: TasksState = {
   //     },
   //   ],
   tasks: [],
-  maxTasksCount: 4,
 };
 
 export const useTasksStore = create<TasksState & TasksActions>()((set) => ({
@@ -71,7 +69,6 @@ export const useTasksStore = create<TasksState & TasksActions>()((set) => ({
   setTasks: (newTasks) => {
     set(() => ({
       tasks: newTasks,
-      // TODO calculate maxTasksCount
     }));
   },
   reset: () => {
