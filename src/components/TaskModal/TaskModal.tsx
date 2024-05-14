@@ -2,7 +2,7 @@ import { FC } from "react";
 import s from "./TaskModal.module.css";
 import { Check } from "../../icons/Check";
 import { Button, Dialog, DialogPanel, Input } from "@headlessui/react";
-import { Calendar } from "../../icons/Calendar";
+//import { Calendar } from "../../icons/Calendar";
 import { Delete } from "../../icons/Delete";
 import { Repeat } from "../../icons/Repeat";
 import { Color } from "../../icons/Color";
