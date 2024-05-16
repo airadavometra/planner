@@ -32,6 +32,8 @@ export const Main = () => {
           isCompleted: extractedData.isCompleted,
           uid: extractedData.uid,
           date: parseDateFromDb(extractedData.date),
+          order: extractedData.order,
+          completedAt: extractedData.completedAt,
         };
       });
 

@@ -35,7 +35,16 @@ export const PlansList: FC<PlansListProps> = ({ title, date }) => {
   //     ((dayjs().isBefore(date) || date?.isToday()) && task.date.isSame(date))
   // );
 
-  const plans = tasks.filter((task) => task.date.isSame(date));
+  const plans = tasks
+    .filter((task) => task.date.isSame(date))
+    .sort((a, b) => {
+      if (a.isCompleted === b.isCompleted) {
+        return a.isCompleted
+          ? a.completedAt - b.completedAt
+          : a.order - b.order;
+      }
+      return a.isCompleted ? 1 : -1;
+    });
 
   return (
     <div ref={plansListRef} className={s.listContainer}>
