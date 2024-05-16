@@ -55,7 +55,7 @@ export const NewTaskInput: FC<NewTaskInputProps> = ({
           onBlur={handleSave}
           onKeyDown={(event) => {
             if (event.key === "Enter") {
-              handleSave;
+              handleSave();
             }
           }}
         />
