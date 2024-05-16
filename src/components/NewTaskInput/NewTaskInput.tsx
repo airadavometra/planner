@@ -44,23 +44,21 @@ export const NewTaskInput: FC<NewTaskInputProps> = ({
   return (
     <>
       <div>
-        <form onSubmit={handleSave}>
-          <Input
-            className={classNames(s.input, s.taskRow)}
-            type="text"
-            ref={inputRef}
-            value={taskTitle}
-            onChange={(e) => {
-              setTaskTitle(e.target.value);
-            }}
-            onBlur={handleSave}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                handleSave();
-              }
-            }}
-          />
-        </form>
+        <Input
+          className={classNames(s.input, s.taskRow)}
+          type="text"
+          ref={inputRef}
+          value={taskTitle}
+          onChange={(e) => {
+            setTaskTitle(e.target.value);
+          }}
+          onBlur={handleSave}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              handleSave();
+            }
+          }}
+        />
         {extraRowsCount > 0 && (
           <>
             {Array(extraRowsCount)
