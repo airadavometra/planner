@@ -5,12 +5,12 @@ export const getDefaultTask = (
   title: string,
   uid: string,
   date: Dayjs,
-  order: number
+  sortingIndex: number
 ) => ({
   title: title,
   date: formatDateForDb(date),
   isCompleted: false,
-  order: order,
+  sortingIndex: sortingIndex,
   color: "transparent",
   uid: uid,
 });

@@ -12,13 +12,13 @@ import { useMaxTasksCount } from "../../hooks/useMaxTasksCount";
 type NewTaskInputProps = {
   plansCount: number;
   date: Dayjs;
-  nextTaskOrder: number;
+  nextTaskSortingIndex: number;
 };
 
 export const NewTaskInput: FC<NewTaskInputProps> = ({
   plansCount,
   date,
-  nextTaskOrder,
+  nextTaskSortingIndex,
 }) => {
   const [user] = useAuthState(auth);
   const maxTasksCount = useMaxTasksCount();
@@ -33,7 +33,7 @@ export const NewTaskInput: FC<NewTaskInputProps> = ({
     if (user && trimmedTaskTitle.length > 0) {
       await addDoc(
         collection(db, "tasks"),
-        getDefaultTask(trimmedTaskTitle, user.uid, date, nextTaskOrder)
+        getDefaultTask(trimmedTaskTitle, user.uid, date, nextTaskSortingIndex)
       );
       setTaskTitle("");
     }

@@ -32,7 +32,7 @@ export const Main = () => {
           isCompleted: extractedData.isCompleted,
           uid: extractedData.uid,
           date: parseDateFromDb(extractedData.date),
-          order: extractedData.order,
+          sortingIndex: extractedData.sortingIndex,
           completedAt: extractedData.completedAt,
         };
       });

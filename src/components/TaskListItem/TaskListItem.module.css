@@ -9,6 +9,7 @@
   width: 100%;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  font-weight: 500;
   text-align: start;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -28,4 +29,9 @@
 .checked {
   opacity: 30%;
   text-decoration: line-through;
+}
+@media (hover: none) {
+  .checkButton {
+    color: var(--text-color);
+  }
 }

@@ -41,7 +41,7 @@ export const PlansList: FC<PlansListProps> = ({ title, date }) => {
       if (a.isCompleted === b.isCompleted) {
         return a.isCompleted
           ? a.completedAt - b.completedAt
-          : a.order - b.order;
+          : a.sortingIndex - b.sortingIndex;
       }
       return a.isCompleted ? 1 : -1;
     });
@@ -65,7 +65,7 @@ export const PlansList: FC<PlansListProps> = ({ title, date }) => {
       <NewTaskInput
         plansCount={plans.length}
         date={date}
-        nextTaskOrder={plans.length}
+        nextTaskSortingIndex={plans.length}
       />
     </div>
   );

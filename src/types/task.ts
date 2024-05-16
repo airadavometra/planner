@@ -8,7 +8,7 @@ export type Task = {
   completedAt: number; //milliseconds
   date: Dayjs;
   uid: string;
-  order: number;
+  sortingIndex: number;
   //color
   //schedule
 };
