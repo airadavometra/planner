@@ -8,9 +8,7 @@ import { collection, query, where } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { useEffect } from "react";
 import { Task } from "../../types/task";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-dayjs.extend(customParseFormat);
+import { parseDateFromDb } from "../../utils/dateFormatting";
 
 export const Main = () => {
   const setTasks = useTasksStore((state) => state.setTasks);
@@ -33,7 +31,7 @@ export const Main = () => {
           title: extractedData.title,
           isCompleted: extractedData.isCompleted,
           uid: extractedData.uid,
-          date: dayjs(extractedData.date, "DD.MM.YYYY"),
+          date: parseDateFromDb(extractedData.date),
         };
       });
 

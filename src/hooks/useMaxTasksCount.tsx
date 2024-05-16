@@ -1,6 +1,7 @@
 import { useCalendarStore } from "../state/useCalendar";
 import { useTasksStore } from "../state/useTasks";
 import { Task } from "../types/task";
+import { formatDateForDb } from "../utils/dateFormatting";
 
 export const useMaxTasksCount = () => {
   const monday = useCalendarStore((state) => state.monday);
@@ -18,7 +19,7 @@ export const useMaxTasksCount = () => {
   const groups = new Map<string, Task[]>();
 
   for (const task of tasksForSelectedWeek) {
-    const dateString = task.date.format("DD.MM.YYYY");
+    const dateString = formatDateForDb(task.date);
     if (groups.has(dateString)) {
       groups.get(dateString)?.push(task);
     } else {

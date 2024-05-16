@@ -6,6 +6,10 @@ import classNames from "classnames";
 import isToday from "dayjs/plugin/isToday";
 import { NewTaskInput } from "../NewTaskInput/NewTaskInput";
 import { useTasksStore } from "../../state/useTasks";
+import {
+  formatDateForPlansList,
+  formatWeekdayForPlansList,
+} from "../../utils/dateFormatting";
 dayjs.extend(isToday);
 
 type PlansListProps = {
@@ -38,8 +42,10 @@ export const PlansList: FC<PlansListProps> = ({ title, date }) => {
       <h2 className={classNames(s.title, { [s.currentDate]: date?.isToday() })}>
         {date && (
           <>
-            <span>{date.format("DD.MM")}</span>
-            <span className={s.secondaryTitle}>{date.format("ddd")}</span>
+            <span>{formatDateForPlansList(date)}</span>
+            <span className={s.secondaryTitle}>
+              {formatWeekdayForPlansList(date)}
+            </span>
           </>
         )}
         {title && <span>{title}</span>}

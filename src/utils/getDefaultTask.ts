@@ -1,4 +1,5 @@
 import { Dayjs } from "dayjs";
+import { formatDateForDb } from "./dateFormatting";
 
 export const getDefaultTask = (
   title: string,
@@ -7,7 +8,7 @@ export const getDefaultTask = (
   order: number
 ) => ({
   title: title,
-  date: date.format("DD.MM.YYYY"),
+  date: formatDateForDb(date),
   isCompleted: false,
   order: order,
   color: "transparent",

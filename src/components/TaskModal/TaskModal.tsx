@@ -14,7 +14,10 @@ import { Delete } from "../../icons/Delete";
 import { Repeat } from "../../icons/Repeat";
 import { Color } from "../../icons/Color";
 import classNames from "classnames";
-import dayjs from "dayjs";
+import {
+  formatDateForInputLabel,
+  parseDateFromInput,
+} from "../../utils/dateFormatting";
 
 type TaskModalProps = {
   title: string;
@@ -52,7 +55,7 @@ export const TaskModal: FC<TaskModalProps> = ({
                 <Label className={s.inputLabel}>
                   <Calendar className={s.buttonIcon} />
                   <span>
-                    {dayjs(date, "YYYY-MM-DD").format("ddd, D MMM YYYY")}
+                    {formatDateForInputLabel(parseDateFromInput(date))}
                   </span>
                 </Label>
                 <div className={s.dateInputContainer}>

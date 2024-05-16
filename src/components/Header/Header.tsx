@@ -6,6 +6,7 @@ import { useCalendarStore } from "../../state/useCalendar";
 import dayjs from "dayjs";
 import { Button } from "@headlessui/react";
 import { AuthButton } from "../AuthButton/AuthButton";
+import { formatDateForHeader } from "../../utils/dateFormatting";
 
 export const Header = () => {
   const { monday, goBack, goForward, reset } = useCalendarStore((state) => ({
@@ -24,7 +25,7 @@ export const Header = () => {
           })}
         >
           <Button className={s.dateButton} onClick={reset}>
-            {monday.format("MMM YYYY")}
+            {formatDateForHeader(monday)}
           </Button>
         </h1>
         <div className={s.buttonsContainer}>
