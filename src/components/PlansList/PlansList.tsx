@@ -37,14 +37,7 @@ export const PlansList: FC<PlansListProps> = ({ title, date }) => {
 
   const plans = tasks
     .filter((task) => task.date.isSame(date))
-    .sort((a, b) => {
-      if (a.isCompleted === b.isCompleted) {
-        return a.isCompleted
-          ? a.completedAt - b.completedAt
-          : a.sortingIndex - b.sortingIndex;
-      }
-      return a.isCompleted ? 1 : -1;
-    });
+    .sort((a, b) => a.completedAt - b.completedAt);
 
   return (
     <div ref={plansListRef} className={s.listContainer}>
