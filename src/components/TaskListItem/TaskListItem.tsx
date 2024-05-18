@@ -13,7 +13,6 @@ import {
   formatDateForDb,
   parseDateFromInput,
   formatDateForInput,
-  formatCompletedAtForDb,
 } from "../../utils/dateFormatting";
 
 type TaskListItemProps = {
@@ -48,7 +47,6 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
       saveData();
     }
   }, [isModalOpen]);
-
   const handleDeleteTask = async () => {
     if (user) {
       await deleteDoc(doc(db, "tasks", task.id));
@@ -61,7 +59,6 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
 
       await updateDoc(taskRef, {
         isCompleted: isCompleted,
-        completedAt: isCompleted ? formatCompletedAtForDb(dayjs()) : "",
       });
     }
   };

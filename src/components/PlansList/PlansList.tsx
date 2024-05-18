@@ -6,6 +6,8 @@ import classNames from "classnames";
 import isToday from "dayjs/plugin/isToday";
 import { NewTaskInput } from "../NewTaskInput/NewTaskInput";
 import { useTasksStore } from "../../state/useTasks";
+import { writeBatch, doc } from "firebase/firestore";
+import { db } from "../../firebase";
 import {
   formatDateForPlansList,
   formatWeekdayForPlansList,
@@ -18,8 +20,14 @@ type PlansListProps = {
 };
 
 export const PlansList: FC<PlansListProps> = ({ title, date }) => {
+  /* Tasks for this day */
   const tasks = useTasksStore((state) => state.tasks);
 
+  const plans = tasks
+    .filter((task) => task.date.isSame(date))
+    .sort((a, b) => a.sortingIndex - b.sortingIndex);
+
+  /* Scroll today into view */
   const plansListRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -28,16 +36,17 @@ export const PlansList: FC<PlansListProps> = ({ title, date }) => {
     }
   }, []);
 
-  // const plans = tasks.filter(
-  //   (task) =>
-  //     (dayjs().isAfter(date) && task.date.isSame(date) && task.isCompleted) ||
-  //     (date?.isToday() && task.date.isBefore(date) && !task.isCompleted) ||
-  //     ((dayjs().isBefore(date) || date?.isToday()) && task.date.isSame(date))
-  // );
+  const saveReorderedPlans = async (reorderedPlans: Task[]) => {
+    const batch = writeBatch(db);
 
-  const plans = tasks
-    .filter((task) => task.date.isSame(date))
-    .sort((a, b) => a.completedAt - b.completedAt);
+    for (let index = 0; index < reorderedPlans.length; index++) {
+      const itemRef = doc(db, "tasks", reorderedPlans[index].id);
+      batch.update(itemRef, { sortingIndex: index });
+    }
+    await batch.commit();
+  };
+
+  /* Drag n drop to reorder list of tasks */
 
   return (
     <div ref={plansListRef} className={s.listContainer}>

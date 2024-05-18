@@ -8,8 +8,6 @@ export const parseDateFromDb = (date: string): Dayjs =>
 export const formatDateForDb = (date: Dayjs): string =>
   date.format("DD.MM.YYYY");
 
-export const formatCompletedAtForDb = (date: Dayjs): number => date.valueOf();
-
 export const parseDateFromInput = (date: string): Dayjs =>
   dayjs(date, "YYYY-MM-DD");
 

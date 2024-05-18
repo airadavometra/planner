@@ -5,7 +5,6 @@ export type Task = {
   title: string;
   description?: string;
   isCompleted: boolean;
-  completedAt: number; //milliseconds
   date: Dayjs;
   uid: string;
   sortingIndex: number;

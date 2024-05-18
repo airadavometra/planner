@@ -33,7 +33,6 @@ export const Main = () => {
           uid: extractedData.uid,
           date: parseDateFromDb(extractedData.date),
           sortingIndex: extractedData.sortingIndex,
-          completedAt: extractedData.completedAt,
         };
       });
 
