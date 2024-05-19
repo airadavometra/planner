@@ -8,6 +8,7 @@ import { Task } from "../../types/task";
 import { useTasksStore } from "../../state/useTasks";
 import { reorderPlans } from "../../utils/reorderPlans";
 import { formatDateForDb, parseDateFromDb } from "../../utils/dateFormatting";
+import { moveTaskToAnotherDay } from "../../utils/moveTaskToAnotherDay";
 
 const saveReorderedPlans = async (reorderedPlans: Task[]) => {
   const batch = writeBatch(db);
@@ -24,24 +25,24 @@ const saveReorderedPlans = async (reorderedPlans: Task[]) => {
 };
 
 const saveMovedPlans = async (
-  movedPlansSource: Task[],
-  movedPlansDestination: Task[]
+  sourcePlansMoved: Task[],
+  destinationPlansMoved: Task[]
 ) => {
   const batch = writeBatch(db);
 
-  for (let index = 0; index < movedPlansSource.length; index++) {
-    const itemRef = doc(db, "tasks", movedPlansSource[index].id);
+  for (let index = 0; index < sourcePlansMoved.length; index++) {
+    const itemRef = doc(db, "tasks", sourcePlansMoved[index].id);
     batch.update(itemRef, {
       sortingIndex: index,
-      date: formatDateForDb(movedPlansSource[index].date),
+      date: formatDateForDb(sourcePlansMoved[index].date),
     });
   }
 
-  for (let index = 0; index < movedPlansDestination.length; index++) {
-    const itemRef = doc(db, "tasks", movedPlansDestination[index].id);
+  for (let index = 0; index < destinationPlansMoved.length; index++) {
+    const itemRef = doc(db, "tasks", destinationPlansMoved[index].id);
     batch.update(itemRef, {
       sortingIndex: index,
-      date: formatDateForDb(movedPlansDestination[index].date),
+      date: formatDateForDb(destinationPlansMoved[index].date),
     });
   }
 
@@ -71,17 +72,18 @@ export const PlansGrid = () => {
 
       saveReorderedPlans(reorderedPlans);
     } else {
-      const sourceTasks = tasksMap.get(source.droppableId) || [];
-      const sourceTasksClone = Array.from(sourceTasks);
-      const [removed] = sourceTasksClone.splice(source.index, 1);
+      const sourcePlans = tasksMap.get(source.droppableId) || [];
+      const destinationPlans = tasksMap.get(destination.droppableId) || [];
 
-      removed.date = parseDateFromDb(destination.droppableId);
+      const [sourcePlansMoved, destinationPlansMoved] = moveTaskToAnotherDay(
+        sourcePlans,
+        destinationPlans,
+        source.index,
+        destination.index,
+        parseDateFromDb(destination.droppableId)
+      );
 
-      const destinationTasks = tasksMap.get(destination.droppableId) || [];
-      const destinationTasksClone = Array.from(destinationTasks);
-      destinationTasksClone.splice(destination.index, 0, removed);
-
-      saveMovedPlans(sourceTasksClone, destinationTasksClone);
+      saveMovedPlans(sourcePlansMoved, destinationPlansMoved);
     }
   };
 
