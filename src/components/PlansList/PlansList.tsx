@@ -60,11 +60,7 @@ export const PlansList: FC<PlansListProps> = ({ title, date }) => {
           </div>
         )}
       </Droppable>
-      <NewTaskInput
-        plansCount={plans.length}
-        date={date}
-        nextTaskSortingIndex={plans.length}
-      />
+      <NewTaskInput plansCount={plans.length} date={date} />
     </div>
   );
 };

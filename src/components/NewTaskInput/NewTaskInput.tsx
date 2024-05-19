@@ -9,14 +9,9 @@ import { useAddNewTask } from "../../firebase/hooks/useAddNewTask";
 type NewTaskInputProps = {
   plansCount: number;
   date: Dayjs;
-  nextTaskSortingIndex: number;
 };
 
-export const NewTaskInput: FC<NewTaskInputProps> = ({
-  plansCount,
-  date,
-  nextTaskSortingIndex,
-}) => {
+export const NewTaskInput: FC<NewTaskInputProps> = ({ plansCount, date }) => {
   const addNewTask = useAddNewTask();
   const maxTasksCount = useMaxTasksCount();
 
@@ -25,7 +20,7 @@ export const NewTaskInput: FC<NewTaskInputProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSave = async () => {
-    await addNewTask(taskTitle, date, nextTaskSortingIndex);
+    await addNewTask(taskTitle, date, plansCount);
 
     setTaskTitle("");
   };
