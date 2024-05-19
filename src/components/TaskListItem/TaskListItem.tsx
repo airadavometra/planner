@@ -14,12 +14,14 @@ import {
   parseDateFromInput,
   formatDateForInput,
 } from "../../utils/dateFormatting";
+import { Draggable } from "@hello-pangea/dnd";
 
 type TaskListItemProps = {
   task: Task;
+  index: number;
 };
 
-export const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
+export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const [user] = useAuthState(auth);
@@ -65,29 +67,44 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task }) => {
 
   return (
     <>
-      <div className={s.container}>
-        <Button
-          className={classNames(s.textButton, {
-            [s.checked]: task.isCompleted,
-          })}
-          onClick={() => setIsModalOpen(true)}
-        >
-          {task.title}
-        </Button>
-        <Button
-          className={classNames(s.checkButton, {
-            [s.checked]: task.isCompleted,
-          })}
-          onClick={() => {
-            setIsCompleted((prev) => {
-              handleCompleteTask(!prev);
-              return !prev;
-            });
-          }}
-        >
-          <Check className={s.checkIcon} />
-        </Button>
-      </div>
+      <Draggable
+        key={task.id}
+        draggableId={task.id}
+        index={index}
+        disableInteractiveElementBlocking
+      >
+        {(provided) => (
+          <div
+            className={s.container}
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            style={provided.draggableProps.style}
+          >
+            <Button
+              className={classNames(s.textButton, {
+                [s.checked]: task.isCompleted,
+              })}
+              onClick={() => setIsModalOpen(true)}
+            >
+              {task.title}
+            </Button>
+            <Button
+              className={classNames(s.checkButton, {
+                [s.checked]: task.isCompleted,
+              })}
+              onClick={() => {
+                setIsCompleted((prev) => {
+                  handleCompleteTask(!prev);
+                  return !prev;
+                });
+              }}
+            >
+              <Check className={s.checkIcon} />
+            </Button>
+          </div>
+        )}
+      </Draggable>
       {isModalOpen && (
         <TaskModal
           title={title}

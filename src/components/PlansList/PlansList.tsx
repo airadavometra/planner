@@ -6,13 +6,12 @@ import classNames from "classnames";
 import isToday from "dayjs/plugin/isToday";
 import { NewTaskInput } from "../NewTaskInput/NewTaskInput";
 import { useTasksStore } from "../../state/useTasks";
-import { writeBatch, doc } from "firebase/firestore";
-import { db } from "../../firebase";
 import {
+  formatDateForDb,
   formatDateForPlansList,
   formatWeekdayForPlansList,
 } from "../../utils/dateFormatting";
-import { Task } from "../../types/task";
+import { Droppable } from "@hello-pangea/dnd";
 dayjs.extend(isToday);
 
 type PlansListProps = {
@@ -21,14 +20,12 @@ type PlansListProps = {
 };
 
 export const PlansList: FC<PlansListProps> = ({ title, date }) => {
-  /* Tasks for this day */
-  const tasks = useTasksStore((state) => state.tasks);
+  const tasksMap = useTasksStore((state) => state.tasksMap);
 
-  const plans = tasks
-    .filter((task) => task.date.isSame(date))
-    .sort((a, b) => a.sortingIndex - b.sortingIndex);
+  const plans = (tasksMap.get(formatDateForDb(date)) || []).sort(
+    (a, b) => a.sortingIndex - b.sortingIndex
+  );
 
-  /* Scroll today into view */
   const plansListRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,18 +33,6 @@ export const PlansList: FC<PlansListProps> = ({ title, date }) => {
       plansListRef.current?.scrollIntoView();
     }
   }, []);
-
-  const saveReorderedPlans = async (reorderedPlans: Task[]) => {
-    const batch = writeBatch(db);
-
-    for (let index = 0; index < reorderedPlans.length; index++) {
-      const itemRef = doc(db, "tasks", reorderedPlans[index].id);
-      batch.update(itemRef, { sortingIndex: index });
-    }
-    await batch.commit();
-  };
-
-  /* Drag n drop to reorder list of tasks */
 
   return (
     <div ref={plansListRef} className={s.listContainer}>
@@ -62,9 +47,19 @@ export const PlansList: FC<PlansListProps> = ({ title, date }) => {
         )}
         {title && <span>{title}</span>}
       </h2>
-      {plans.map((item) => (
-        <TaskListItem key={item.title} task={item} />
-      ))}
+      <Droppable
+        key={formatDateForDb(date)}
+        droppableId={formatDateForDb(date)}
+      >
+        {(provided) => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            {plans.map((item, index) => (
+              <TaskListItem key={item.id} task={item} index={index} />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
       <NewTaskInput
         plansCount={plans.length}
         date={date}
