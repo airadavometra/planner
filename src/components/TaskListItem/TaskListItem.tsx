@@ -64,7 +64,13 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
               })}
               onClick={() => setIsModalOpen(true)}
             >
-              {task.title}
+              <span
+                className={classNames(s.text, {
+                  [s[task.color]]: true,
+                })}
+              >
+                {task.title}
+              </span>
             </Button>
             <Button
               className={classNames(s.checkButton, {
