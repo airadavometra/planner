@@ -2,12 +2,9 @@ import { FC, useRef, useState } from "react";
 import s from "./NewTaskInput.module.css";
 import { Input } from "@headlessui/react";
 import classNames from "classnames";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "../../firebase";
-import { addDoc, collection } from "firebase/firestore";
-import { getDefaultTask } from "../../utils/getDefaultTask";
 import { Dayjs } from "dayjs";
 import { useMaxTasksCount } from "../../hooks/useMaxTasksCount";
+import { useAddNewTask } from "../../firebase/hooks/useAddNewTask";
 
 type NewTaskInputProps = {
   plansCount: number;
@@ -20,7 +17,7 @@ export const NewTaskInput: FC<NewTaskInputProps> = ({
   date,
   nextTaskSortingIndex,
 }) => {
-  const [user] = useAuthState(auth);
+  const addNewTask = useAddNewTask();
   const maxTasksCount = useMaxTasksCount();
 
   const [taskTitle, setTaskTitle] = useState<string>("");
@@ -28,15 +25,9 @@ export const NewTaskInput: FC<NewTaskInputProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSave = async () => {
-    const trimmedTaskTitle = taskTitle.trim();
+    await addNewTask(taskTitle, date, nextTaskSortingIndex);
 
-    if (user && trimmedTaskTitle.length > 0) {
-      await addDoc(
-        collection(db, "tasks"),
-        getDefaultTask(trimmedTaskTitle, user.uid, date, nextTaskSortingIndex)
-      );
-      setTaskTitle("");
-    }
+    setTaskTitle("");
   };
 
   const extraRowsCount = maxTasksCount - plansCount;

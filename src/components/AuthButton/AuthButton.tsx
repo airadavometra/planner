@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { auth, googleProvider } from "../../firebase";
+import { auth, googleProvider } from "../../firebase/firebase";
 import { User } from "../../icons/User";
 import { Button } from "@headlessui/react";
 import s from "./AuthButton.module.css";

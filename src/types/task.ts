@@ -8,6 +8,6 @@ export type Task = {
   date: Dayjs;
   uid: string;
   sortingIndex: number;
-  //color
+  color: string;
   //schedule
 };
