@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { Dayjs } from "dayjs";
 import { useMaxTasksCount } from "../../hooks/useMaxTasksCount";
 import { useAddNewTask } from "../../firebase/hooks/useAddNewTask";
+import useMediaQuery from "../../hooks/useMediaQuery";
 
 type NewTaskInputProps = {
   plansCount: number;
@@ -12,12 +13,11 @@ type NewTaskInputProps = {
 };
 
 export const NewTaskInput: FC<NewTaskInputProps> = ({ plansCount, date }) => {
-  const addNewTask = useAddNewTask();
-  const maxTasksCount = useMaxTasksCount();
-
   const [taskTitle, setTaskTitle] = useState<string>("");
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const addNewTask = useAddNewTask();
 
   const handleSave = async () => {
     await addNewTask(taskTitle, date, plansCount);
@@ -25,7 +25,11 @@ export const NewTaskInput: FC<NewTaskInputProps> = ({ plansCount, date }) => {
     setTaskTitle("");
   };
 
-  const extraRowsCount = maxTasksCount - plansCount;
+  const maxTasksCount = useMaxTasksCount();
+
+  const isMobile = useMediaQuery("(max-width: 64rem)");
+
+  const extraRowsCount = isMobile ? 0 : maxTasksCount - plansCount;
 
   return (
     <>
