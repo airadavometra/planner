@@ -12,6 +12,7 @@ import {
   formatDateForPlansList,
   formatWeekdayForPlansList,
 } from "../../utils/dateFormatting";
+import { Task } from "../../types/task";
 dayjs.extend(isToday);
 
 type PlansListProps = {
