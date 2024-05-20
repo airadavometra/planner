@@ -16,7 +16,7 @@
   height: 100%;
   max-width: 768px;
   margin-left: auto;
-  position: absolute;
+  position: fixed;
   inset: 0;
   background-color: var(--white);
   background-image: url("/public/gradient.png");
