@@ -20,7 +20,7 @@
 .modal {
   width: 100%;
   height: fit-content;
-  padding: min(1rem, 20px) min(1.5rem, 32px) min(2.5rem, 48px) min(1.5rem, 32px);
+  padding: min(1rem, 20px) min(1.5rem, 32px) min(2.5rem, 48px);
   border-radius: 16px 16px 0 0;
   background-color: var(--background-color);
 }

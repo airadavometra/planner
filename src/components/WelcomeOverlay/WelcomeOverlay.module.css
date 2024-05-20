@@ -62,13 +62,13 @@
 }
 @media (max-width: 64rem) {
   .modalContainer {
-    width: calc(100% - 32px);
-    height: calc(100% - 32px);
-    max-width: unset;
-    margin: 16px;
+    width: 100%;
+    height: fit-content;
+    inset: unset;
+    bottom: 0;
     border-radius: 16px;
   }
   .modal {
-    padding: min(2rem, 40px);
+    padding: min(1.5rem, 32px) min(1.5rem, 32px) min(2.5rem, 48px);
   }
 }
