@@ -5,20 +5,21 @@
   --regular-font-weight: 400;
   --semi-bold-font-weight: 600;
   --title-font: "Montserrat", Arial, serif;
+
   --black: #000000;
   --white: #ffffff;
   --black-transparent: #0000001a;
   --white-transparent: #ffffff1a;
-  --blue: #3e7bff;
 
-  --pink: #e00052;
-  --cornflower: #5167f4;
+  --blue: #3e7bff;
+  --yellow: #ffcc00;
+  --red: #f54a37;
+  --pink: #ff7d93;
+  --green: #3a9c54;
+  --purple: #7e44ad;
+  --grey: #b4b4b8;
+
   --lavender: #dde1fb;
-  --yellowish: #fdef5d;
-  --greenish: #22ffa1;
-  --mango: #ffb022;
-  --lilac: #d85dfd;
-  --grey: #c2c2c2;
 
   --text-color: var(--black);
   --text-color-transparent: var(--black-transparent);
@@ -62,29 +63,25 @@ a {
 .transparent {
   background-color: var(--white) !important;
 }
-.mango {
-  background-color: var(--mango) !important;
+.blue {
+  background-color: var(--blue) !important;
+}
+.yellow {
+  background-color: var(--yellow) !important;
+}
+.red {
+  background-color: var(--red) !important;
 }
 .pink {
-  color: var(--white) !important;
   background-color: var(--pink) !important;
 }
-.cornflower {
+.green {
+  background-color: var(--green) !important;
+}
+.purple {
   color: var(--white) !important;
-  background-color: var(--cornflower) !important;
-}
-.greenish {
-  background-color: var(--greenish) !important;
-}
-.yellowish {
-  background-color: var(--yellowish) !important;
-}
-.lilac {
-  background-color: var(--lilac) !important;
+  background-color: var(--purple) !important;
 }
 .grey {
   background-color: var(--grey) !important;
-}
-.lavender {
-  background-color: var(--lavender) !important;
 }

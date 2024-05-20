@@ -78,11 +78,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: min(1rem, 20px);
 }
 .buttonIcon {
-  width: min(1rem, 20px);
-  height: min(1rem, 20px);
+  width: min(1.5rem, 32px);
+  height: min(1.5rem, 32px);
 }
 .actionButton {
   flex-shrink: 0;
