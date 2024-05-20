@@ -11,15 +11,16 @@
   --black-transparent: #0000001a;
   --white-transparent: #ffffff1a;
 
-  --blue: #3e7bff;
-  --yellow: #ffcc00;
-  --red: #f54a37;
-  --pink: #ff7d93;
-  --green: #3a9c54;
-  --purple: #7e44ad;
-  --grey: #b4b4b8;
-
+  --sky-blue: #3e7bff;
   --lavender: #dde1fb;
+
+  --blue: #87a8ee;
+  --yellow: #ffdd53;
+  --red: #f18989;
+  --pink: #fdad6b;
+  --green: #5fc179;
+  --purple: #b98edc;
+  --grey: #b4b4b8;
 
   --text-color: var(--black);
   --text-color-transparent: var(--black-transparent);
@@ -79,7 +80,7 @@ a {
   background-color: var(--green) !important;
 }
 .purple {
-  color: var(--white) !important;
+  //color: var(--white) !important;
   background-color: var(--purple) !important;
 }
 .grey {

@@ -13,7 +13,7 @@
   white-space: nowrap;
 }
 .anotherWeek {
-  color: var(--blue);
+  color: var(--sky-blue);
 }
 .buttonsContainer {
   display: flex;
