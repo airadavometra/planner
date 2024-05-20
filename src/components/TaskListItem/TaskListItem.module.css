@@ -19,29 +19,6 @@
   white-space: nowrap;
   border-radius: 1rem;
 }
-.mango {
-  background-color: var(--mango);
-}
-.pink {
-  color: var(--white);
-  background-color: var(--pink);
-}
-.cornflower {
-  color: var(--white);
-  background-color: var(--cornflower);
-}
-.greenish {
-  background-color: var(--greenish);
-}
-.yellowish {
-  background-color: var(--yellowish);
-}
-.lilac {
-  background-color: var(--lilac);
-}
-.grey {
-  background-color: var(--grey);
-}
 .checkButton {
   flex-shrink: 0;
   padding: 0.5rem;

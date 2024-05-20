@@ -23,6 +23,7 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
   const [title, setTitle] = useState<string>(task.title);
   const [date, setDate] = useState<string>(formatDateForInput(task.date));
   const [isCompleted, setIsCompleted] = useState<boolean>(task.isCompleted);
+  const [color, setColor] = useState<string>(task.color);
 
   const deleteTask = useDeleteTask();
   const completeTask = useCompleteTask();
@@ -30,7 +31,7 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
 
   useEffect(() => {
     if (!isModalOpen) {
-      updateTask(task.id, title, date, isCompleted, task.title);
+      updateTask(task.id, title, date, isCompleted, color, task.title);
     }
   }, [isModalOpen]);
 
@@ -66,7 +67,7 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
             >
               <span
                 className={classNames(s.text, {
-                  [s[task.color]]: true,
+                  [task.color]: true,
                 })}
               >
                 {task.title}
@@ -99,6 +100,8 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
           }}
           isCompleted={isCompleted}
           onToggleIsCompleted={() => setIsCompleted((prev) => !prev)}
+          color={color}
+          onChangeColor={setColor}
           onDelete={handleDeleteTask}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}

@@ -15,6 +15,7 @@ export const useUpdateTask = () => {
     title: string,
     date: string,
     isCompleted: boolean,
+    color: string,
     oldTitle: string
   ) => {
     if (user) {
@@ -27,6 +28,7 @@ export const useUpdateTask = () => {
         title: newTaskTitle.length > 0 ? newTaskTitle : oldTitle,
         date: formatDateForDb(newDate),
         isCompleted: isCompleted,
+        color: color,
       });
     }
   };

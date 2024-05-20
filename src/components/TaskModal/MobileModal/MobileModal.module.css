@@ -20,8 +20,7 @@
 .modal {
   width: 100%;
   height: fit-content;
-  padding: min(1.5rem, 32px);
-  padding-bottom: min(2.5rem, 48px);
+  padding: min(1rem, 20px) min(1.5rem, 32px) min(2.5rem, 48px) min(1.5rem, 32px);
   border-radius: 16px 16px 0 0;
   background-color: var(--background-color);
 }
@@ -82,19 +81,19 @@
   gap: min(1rem, 20px);
 }
 .buttonIcon {
-  flex-shrink: 0;
   width: min(1rem, 20px);
   height: min(1rem, 20px);
 }
 .actionButton {
+  flex-shrink: 0;
   padding: 0.75rem;
   border-radius: 100%;
 }
 .inputSection {
   width: 100%;
+  margin-bottom: min(2rem, 48px);
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--black-transparent);
 }
 .input {
   width: 100%;
@@ -104,11 +103,30 @@
   font-size: clamp(1.125rem, 1.0682rem + 0.2841vw, 1.25rem);
   font-weight: 600;
   background-color: transparent;
-  color: var(--black);
+  color: inherit;
   border: none;
   resize: none;
 }
 .checked {
   opacity: 30%;
   text-decoration: line-through;
+}
+.buttonsArea {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: min(1rem, 20px);
+}
+.colors {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.color {
+  border-radius: 100%;
+}
+.selectedColor {
+  border: 1px solid;
+  border-color: inherit;
 }

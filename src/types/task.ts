@@ -1,4 +1,5 @@
 import { Dayjs } from "dayjs";
+import { Color } from "./color";
 
 export type Task = {
   id: string;
@@ -8,6 +9,6 @@ export type Task = {
   date: Dayjs;
   uid: string;
   sortingIndex: number;
-  color: string;
+  color: Color;
   //schedule
 };

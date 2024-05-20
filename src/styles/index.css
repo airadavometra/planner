@@ -58,3 +58,33 @@ a {
 .frozen {
   overflow: hidden;
 }
+
+.transparent {
+  background-color: var(--white) !important;
+}
+.mango {
+  background-color: var(--mango) !important;
+}
+.pink {
+  color: var(--white) !important;
+  background-color: var(--pink) !important;
+}
+.cornflower {
+  color: var(--white) !important;
+  background-color: var(--cornflower) !important;
+}
+.greenish {
+  background-color: var(--greenish) !important;
+}
+.yellowish {
+  background-color: var(--yellowish) !important;
+}
+.lilac {
+  background-color: var(--lilac) !important;
+}
+.grey {
+  background-color: var(--grey) !important;
+}
+.lavender {
+  background-color: var(--lavender) !important;
+}

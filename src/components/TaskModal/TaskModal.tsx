@@ -10,6 +10,8 @@ export type TaskModalProps = {
   onChangeDate: (newDate: string) => void;
   isCompleted: boolean;
   onToggleIsCompleted: () => void;
+  color: string;
+  onChangeColor: (newColor: string) => void;
   onDelete: () => void;
   isOpen: boolean;
   onClose: () => void;

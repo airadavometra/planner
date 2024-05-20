@@ -25,8 +25,6 @@
   padding: min(2rem, 40px);
   padding-bottom: min(3rem, 60px);
   border-radius: 16px;
-  background-color: var(--lavender);
-  color: var(--black);
 }
 .content {
   display: flex;
@@ -77,6 +75,9 @@
   color: transparent;
   cursor: pointer;
 }
+.buttonsSection {
+  display: flex;
+}
 .buttonIcon {
   flex-shrink: 0;
   width: min(1rem, 20px);
@@ -86,12 +87,6 @@
   padding: 0.75rem;
   border-radius: 100%;
 }
-.inputSection {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid var(--black-transparent);
-}
 .input {
   width: 100%;
   padding-top: 0.5rem;
@@ -100,7 +95,7 @@
   font-size: clamp(1.125rem, 1.0682rem + 0.2841vw, 1.25rem);
   font-weight: 600;
   background-color: transparent;
-  color: var(--black);
+  color: inherit;
   border: none;
   resize: none;
 }
@@ -108,15 +103,29 @@
   opacity: 30%;
   text-decoration: line-through;
 }
-
-@media (max-width: 64rem) {
-  .modalContainer {
-    margin: 64px auto;
-  }
-  .modal {
-    padding: min(1rem, 20px);
-  }
-  .header {
-    gap: min(1rem, 20px);
-  }
+.colors {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+.color {
+  border-radius: 100%;
+}
+.selectedColor {
+  border: 1px solid;
+  border-color: inherit;
+}
+.popover {
+  width: fit-content;
+  height: fit-content;
+  position: relative;
+}
+.popoverPanel {
+  padding: min(0.5rem, 16px);
+  position: absolute;
+  right: 0;
+  z-index: 3;
+  border-radius: 16px;
+  border: 1px solid;
+  border-color: inherit;
 }
