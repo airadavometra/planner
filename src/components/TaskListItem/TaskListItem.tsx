@@ -6,7 +6,10 @@ import { Task } from "../../types/task";
 import { TaskModal } from "../TaskModal/TaskModal";
 import { Button } from "@headlessui/react";
 import dayjs from "dayjs";
-import { formatDateForInput } from "../../utils/dateFormatting";
+import {
+  formatDateForInput,
+  parseDateFromInput,
+} from "../../utils/dateFormatting";
 import { Draggable } from "@hello-pangea/dnd";
 import { useDeleteTask } from "../../firebase/hooks/useDeleteTask";
 import { useCompleteTask } from "../../firebase/hooks/useCompleteTask";
@@ -31,7 +34,11 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
 
   useEffect(() => {
     if (!isModalOpen) {
-      updateTask(task.id, title, date, isCompleted, color, task.title);
+      updateTask(task.id, title, date, color, task.title);
+
+      if (isCompleted !== task.isCompleted) {
+        completeTask(task.id, parseDateFromInput(date), isCompleted);
+      }
     }
   }, [isModalOpen]);
 
@@ -40,7 +47,7 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
   };
 
   const handleCompleteTask = async (isCompleted: boolean) => {
-    await completeTask(task.id, isCompleted);
+    await completeTask(task.id, parseDateFromInput(date), isCompleted);
   };
 
   return (

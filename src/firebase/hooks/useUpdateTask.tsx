@@ -14,7 +14,6 @@ export const useUpdateTask = () => {
     taskId: string,
     title: string,
     date: string,
-    isCompleted: boolean,
     color: string,
     oldTitle: string
   ) => {
@@ -27,7 +26,6 @@ export const useUpdateTask = () => {
       await updateDoc(taskRef, {
         title: newTaskTitle.length > 0 ? newTaskTitle : oldTitle,
         date: formatDateForDb(newDate),
-        isCompleted: isCompleted,
         color: color,
       });
     }

@@ -22,9 +22,7 @@ type PlansListProps = {
 export const PlansList: FC<PlansListProps> = ({ title, date }) => {
   const tasksMap = useTasksStore((state) => state.tasksMap);
 
-  const plans = (tasksMap.get(formatDateForDb(date)) || []).sort(
-    (a, b) => a.sortingIndex - b.sortingIndex
-  );
+  const plans = tasksMap.get(formatDateForDb(date)) || [];
 
   const plansListRef = useRef<HTMLDivElement>(null);
 

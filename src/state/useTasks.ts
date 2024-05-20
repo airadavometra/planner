@@ -37,6 +37,10 @@ export const useTasksStore = create<TasksState & TasksActions>()((set) => ({
       }
     }
 
+    tasksMap.forEach((group) =>
+      group.sort((a, b) => a.sortingIndex - b.sortingIndex)
+    );
+
     set(() => ({
       tasks: newTasks,
       tasksMap: tasksMap,
