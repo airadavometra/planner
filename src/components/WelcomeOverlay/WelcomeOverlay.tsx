@@ -6,7 +6,7 @@ import { signInWithPopup } from "firebase/auth";
 import { LogIn } from "../../icons/LogIn";
 
 export const WelcomeOverlay = () => {
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
   const handleSignIn = async () => {
     try {
@@ -16,12 +16,12 @@ export const WelcomeOverlay = () => {
     }
   };
 
-  if (user) {
+  if (user || loading) {
     return null;
   }
 
   return (
-    <Dialog open={!user} onClose={() => {}}>
+    <Dialog open={!user && !loading} onClose={() => {}}>
       <div className={s.backdropFilter} aria-hidden="true">
         <div className={s.backdropColor} aria-hidden="true" />
       </div>
