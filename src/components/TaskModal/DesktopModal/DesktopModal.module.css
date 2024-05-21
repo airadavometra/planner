@@ -84,8 +84,17 @@
 }
 .actionButton {
   flex-shrink: 0;
-  padding: 0.75rem;
+  margin: min(0.25rem, 8px);
+  padding: min(0.5rem, 12px);
   border-radius: 100%;
+}
+.actionButton:hover {
+  background-color: var(--text-color-transparent);
+}
+.actionButton:focus,
+.actionButton:active {
+  color: var(--background-color);
+  background-color: var(--text-color);
 }
 .input {
   width: 100%;
@@ -98,6 +107,16 @@
   color: inherit;
   border: none;
   resize: none;
+}
+.input:hover {
+  border-bottom: 1px solid var(--text-color-transparent);
+}
+.input:focus,
+.input:active {
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.2);
+  outline: none;
+  border: none !important;
+  border-radius: 4px;
 }
 .checked {
   opacity: 30%;

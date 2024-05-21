@@ -33,7 +33,7 @@ export const NewTaskInput: FC<NewTaskInputProps> = ({ plansCount, date }) => {
 
   return (
     <>
-      <div>
+      <div className={s.container}>
         <Input
           className={classNames(s.input, s.taskRow)}
           type="text"

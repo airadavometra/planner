@@ -12,6 +12,9 @@
   text-align: start;
   white-space: nowrap;
 }
+.dateButton:hover {
+  opacity: 80%;
+}
 .anotherWeek {
   color: var(--sky-blue);
 }
@@ -27,6 +30,9 @@
   justify-content: center;
   background-color: var(--text-color);
   border-radius: 100%;
+}
+.arrowButton:hover {
+  opacity: 80%;
 }
 .arrowIcon {
   width: clamp(1rem, 0.7727rem + 1.1364vw, 1.5rem);

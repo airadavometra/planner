@@ -56,6 +56,9 @@
   color: var(--white);
   border-radius: 32px;
 }
+.loginButton:hover {
+  opacity: 80%;
+}
 .icon {
   width: clamp(1rem, 0.7727rem + 1.1364vw, 1.5rem);
   color: inherit;

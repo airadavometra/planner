@@ -1,3 +1,13 @@
+.container:hover .input {
+  border-bottom: 1px solid var(--sky-blue);
+}
+.input:focus,
+.input:active {
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.2);
+  outline: none;
+  border: none !important;
+  border-radius: 4px;
+}
 .taskRow {
   width: 100%;
   padding-top: 0.5rem;
