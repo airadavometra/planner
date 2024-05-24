@@ -16,9 +16,11 @@
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   text-align: start;
+  overflow: hidden;
 }
 .text {
   width: fit-content;
+  max-width: 100%;
   padding: 0.25rem 0.75rem;
   display: block;
   font-weight: 500;
