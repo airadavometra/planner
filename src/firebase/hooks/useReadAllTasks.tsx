@@ -11,7 +11,7 @@ import { COLLECTION_NAME } from "../constants";
 export const useReadAllTasks = () => {
   const setTasks = useTasksStore((state) => state.setTasks);
 
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
   const dataQuery = user
     ? query(
@@ -20,7 +20,7 @@ export const useReadAllTasks = () => {
       )
     : null;
 
-  const [value /*loading, error*/] = useCollection(dataQuery);
+  const [value, dataLoading /*, error*/] = useCollection(dataQuery);
 
   useEffect(() => {
     if (value) {
@@ -41,4 +41,6 @@ export const useReadAllTasks = () => {
       setTasks(tasks);
     }
   }, [value, setTasks]);
+
+  return loading || dataLoading;
 };

@@ -66,6 +66,7 @@
 @media (max-width: 64rem) {
   .modalContainer {
     width: 100%;
+    max-width: unset;
     height: fit-content;
     inset: unset;
     bottom: 0;
