@@ -6,15 +6,14 @@ const manifestForPlugIn: Partial<VitePWAOptions> = {
   registerType: "prompt",
   includeAssets: ["vite.svg"],
   manifest: {
-    name: "Just a planner — minimalistic daily planner and to-do list.",
+    name: "Just a planner",
     short_name: "Just a planner",
     start_url: "index.html",
     display: "standalone",
     orientation: "portrait-primary",
     theme_color: "#3e7bff",
     background_color: "#dde1fb",
-    description:
-      "Just a planner is a FREE personal to-do list and daily planner to help you organise your days.",
+    description: "Minimalistic daily planner and to-do list",
     icons: [
       {
         src: "/icon-48.png",
