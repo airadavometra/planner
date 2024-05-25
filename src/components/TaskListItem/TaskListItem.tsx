@@ -27,6 +27,9 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
   const [date, setDate] = useState<string>(formatDateForInput(task.date));
   const [isCompleted, setIsCompleted] = useState<boolean>(task.isCompleted);
   const [color, setColor] = useState<string>(task.color);
+  const [schedule, setSchedule] = useState<string>(
+    task.recurringTask?.schedule || ""
+  );
 
   const deleteTask = useDeleteTask();
   const completeTask = useCompleteTask();
@@ -109,6 +112,8 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
           onToggleIsCompleted={() => setIsCompleted((prev) => !prev)}
           color={color}
           onChangeColor={setColor}
+          schedule={schedule}
+          onChangeSchedule={setSchedule}
           onDelete={handleDeleteTask}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}

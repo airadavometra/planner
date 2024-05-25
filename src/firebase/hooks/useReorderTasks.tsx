@@ -1,7 +1,7 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase";
 import { doc, writeBatch } from "firebase/firestore";
-import { COLLECTION_NAME } from "../constants";
+import { TASKS_COLLECTION_NAME } from "../constants";
 import { formatDateForDb, parseDateFromDb } from "../../utils/dateFormatting";
 import { useTasksStore } from "../../state/useTasks";
 import { reorderPlans } from "../../utils/reorderPlans";
@@ -29,7 +29,11 @@ export const useReorderTasks = () => {
         );
 
         for (let index = 0; index < reorderedPlans.length; index++) {
-          const itemRef = doc(db, COLLECTION_NAME, reorderedPlans[index].id);
+          const itemRef = doc(
+            db,
+            TASKS_COLLECTION_NAME,
+            reorderedPlans[index].id
+          );
           batch.update(itemRef, {
             sortingIndex: index,
             date: formatDateForDb(reorderedPlans[index].date),
@@ -48,7 +52,11 @@ export const useReorderTasks = () => {
         );
 
         for (let index = 0; index < sourcePlansMoved.length; index++) {
-          const itemRef = doc(db, COLLECTION_NAME, sourcePlansMoved[index].id);
+          const itemRef = doc(
+            db,
+            TASKS_COLLECTION_NAME,
+            sourcePlansMoved[index].id
+          );
           batch.update(itemRef, {
             sortingIndex: index,
             date: formatDateForDb(sourcePlansMoved[index].date),
@@ -58,7 +66,7 @@ export const useReorderTasks = () => {
         for (let index = 0; index < destinationPlansMoved.length; index++) {
           const itemRef = doc(
             db,
-            COLLECTION_NAME,
+            TASKS_COLLECTION_NAME,
             destinationPlansMoved[index].id
           );
           batch.update(itemRef, {

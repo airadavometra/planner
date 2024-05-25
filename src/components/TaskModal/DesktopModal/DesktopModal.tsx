@@ -23,6 +23,7 @@ import { Color } from "../../../icons/Color";
 import classNames from "classnames";
 import { Check } from "../../../icons/Check";
 import { Color as ColorEnum } from "../../../types/color";
+import { Schedule } from "../../../types/schedule";
 
 export const DesktopModal: FC<TaskModalProps> = ({
   title,
@@ -33,11 +34,16 @@ export const DesktopModal: FC<TaskModalProps> = ({
   onToggleIsCompleted,
   color,
   onChangeColor,
+  schedule,
+  onChangeSchedule,
   onDelete,
   isOpen,
   onClose,
 }) => {
   const colors = Object.keys(ColorEnum).map((color) => color.toLowerCase());
+  const scheduleOptions = Object.keys(Schedule).map((schedule) =>
+    schedule.toLowerCase()
+  );
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
@@ -71,9 +77,29 @@ export const DesktopModal: FC<TaskModalProps> = ({
                   <Button className={s.actionButton} onClick={onDelete}>
                     <Delete className={s.buttonIcon} />
                   </Button>
-                  <Button className={s.actionButton}>
-                    <Repeat className={s.buttonIcon} />
-                  </Button>
+                  <Popover className={s.popover}>
+                    <PopoverButton className={s.actionButton}>
+                      <Repeat className={s.buttonIcon} />
+                    </PopoverButton>
+                    <PopoverPanel
+                      className={classNames(s.popoverPanel, { [color]: true })}
+                    >
+                      <span className={s.sectionTitle}>Repeat</span>
+                      <div className={s.scheduleOptions}>
+                        {scheduleOptions.map((scheduleItem) => (
+                          <Button
+                            key={scheduleItem}
+                            className={classNames(s.scheduleItemButton, {
+                              [s.selectedSchedule]: scheduleItem === schedule,
+                            })}
+                            onClick={() => onChangeSchedule(scheduleItem)}
+                          >
+                            {scheduleItem}
+                          </Button>
+                        ))}
+                      </div>
+                    </PopoverPanel>
+                  </Popover>
                   <Popover className={s.popover}>
                     <PopoverButton className={s.actionButton}>
                       <Color className={s.buttonIcon} />
@@ -81,6 +107,7 @@ export const DesktopModal: FC<TaskModalProps> = ({
                     <PopoverPanel
                       className={classNames(s.popoverPanel, { [color]: true })}
                     >
+                      <span className={s.sectionTitle}>Color</span>
                       <div className={s.colors}>
                         {colors.map((colorItem) => (
                           <Button

@@ -1,7 +1,7 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase";
 import { doc, updateDoc } from "firebase/firestore";
-import { COLLECTION_NAME } from "../constants";
+import { TASKS_COLLECTION_NAME } from "../constants";
 import {
   formatDateForDb,
   parseDateFromInput,
@@ -18,7 +18,7 @@ export const useUpdateTask = () => {
     oldTitle: string
   ) => {
     if (user) {
-      const taskRef = doc(db, COLLECTION_NAME, taskId);
+      const taskRef = doc(db, TASKS_COLLECTION_NAME, taskId);
 
       const newTaskTitle = title.trim();
       const newDate = parseDateFromInput(date);

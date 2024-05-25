@@ -21,6 +21,7 @@ import classNames from "classnames";
 import { Check } from "../../../icons/Check";
 import { Close } from "../../../icons/Close";
 import { Color as ColorEnum } from "../../../types/color";
+import { Schedule } from "../../../types/schedule";
 
 export const MobileModal: FC<TaskModalProps> = ({
   title,
@@ -31,13 +32,20 @@ export const MobileModal: FC<TaskModalProps> = ({
   onToggleIsCompleted,
   color,
   onChangeColor,
+  schedule,
+  onChangeSchedule,
   onDelete,
   isOpen,
   onClose,
 }) => {
   const [isChangeColorOpen, setIsChangeColorOpen] = useState<boolean>(false);
+  const [isChangeScheduleOpen, setIsChangeScheduleOpen] =
+    useState<boolean>(false);
 
   const colors = Object.keys(ColorEnum).map((color) => color.toLowerCase());
+  const scheduleOptions = Object.keys(Schedule).map((schedule) =>
+    schedule.toLowerCase()
+  );
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
@@ -89,35 +97,66 @@ export const MobileModal: FC<TaskModalProps> = ({
             </div>
             <div className={s.buttonsArea}>
               {isChangeColorOpen && (
-                <div className={s.colors}>
-                  {colors.map((colorItem) => (
-                    <Button
-                      key={colorItem}
-                      className={s.actionButton}
-                      onClick={() => onChangeColor(colorItem)}
-                    >
-                      <div
-                        className={classNames(s.buttonIcon, s.color, {
-                          [colorItem]: true,
-                          [s.selectedColor]: colorItem === color,
+                <div className={s.section}>
+                  <span className={s.sectionTitle}>Color</span>
+                  <div className={s.colors}>
+                    {colors.map((colorItem) => (
+                      <Button
+                        key={colorItem}
+                        className={s.actionButton}
+                        onClick={() => onChangeColor(colorItem)}
+                      >
+                        <div
+                          className={classNames(s.buttonIcon, s.color, {
+                            [colorItem]: true,
+                            [s.selectedColor]: colorItem === color,
+                          })}
+                        />
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {isChangeScheduleOpen && (
+                <div className={s.section}>
+                  <span className={s.sectionTitle}>Repeat</span>
+                  <div className={s.scheduleOptions}>
+                    {scheduleOptions.map((scheduleItem) => (
+                      <Button
+                        key={scheduleItem}
+                        className={classNames(s.scheduleItemButton, {
+                          [s.selectedSchedule]: scheduleItem === schedule,
                         })}
-                      />
-                    </Button>
-                  ))}
+                        onClick={() => onChangeSchedule(scheduleItem)}
+                      >
+                        {scheduleItem}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
               )}
               <div className={s.buttonsSection}>
                 <Button className={s.actionButton} onClick={onDelete}>
                   <Delete className={s.buttonIcon} />
                 </Button>
-                <Button className={s.actionButton}>
+                <Button
+                  className={s.actionButton}
+                  onClick={() => {
+                    setIsChangeScheduleOpen((prevState) => !prevState);
+                    setIsChangeColorOpen(false);
+                  }}
+                >
                   <Repeat className={s.buttonIcon} />
                 </Button>
                 <Button
-                  className={s.actionButton}
-                  onClick={() =>
-                    setIsChangeColorOpen((prevState) => !prevState)
-                  }
+                  className={classNames([
+                    s.actionButton,
+                    { [s.actionButtonActive]: isChangeColorOpen },
+                  ])}
+                  onClick={() => {
+                    setIsChangeColorOpen((prevState) => !prevState);
+                    setIsChangeScheduleOpen(false);
+                  }}
                 >
                   <Color className={s.buttonIcon} />
                 </Button>

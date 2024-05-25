@@ -6,7 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase";
 import { collection, query, where } from "firebase/firestore";
 import { Task } from "../../types/task";
-import { COLLECTION_NAME } from "../constants";
+import { TASKS_COLLECTION_NAME } from "../constants";
 
 export const useReadAllTasks = () => {
   const setTasks = useTasksStore((state) => state.setTasks);
@@ -15,7 +15,7 @@ export const useReadAllTasks = () => {
 
   const dataQuery = user
     ? query(
-        collection(db, COLLECTION_NAME),
+        collection(db, TASKS_COLLECTION_NAME),
         where("uid", "==", user?.uid || "")
       )
     : null;

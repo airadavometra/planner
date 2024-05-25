@@ -1,7 +1,7 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase";
 import { doc, updateDoc, writeBatch } from "firebase/firestore";
-import { COLLECTION_NAME } from "../constants";
+import { TASKS_COLLECTION_NAME } from "../constants";
 import { useTasksStore } from "../../state/useTasks";
 import { reorderPlans } from "../../utils/reorderPlans";
 import { Dayjs } from "dayjs";
@@ -26,7 +26,7 @@ export const useCompleteTask = () => {
       const newIndex = isCompleted ? tasks.length - 1 : 0;
 
       if (taskIndex === newIndex) {
-        const taskRef = doc(db, COLLECTION_NAME, taskId);
+        const taskRef = doc(db, TASKS_COLLECTION_NAME, taskId);
 
         await updateDoc(taskRef, {
           isCompleted: isCompleted,
@@ -37,7 +37,11 @@ export const useCompleteTask = () => {
         const reorderedPlans = reorderPlans(tasks, taskIndex, newIndex);
 
         for (let index = 0; index < reorderedPlans.length; index++) {
-          const itemRef = doc(db, COLLECTION_NAME, reorderedPlans[index].id);
+          const itemRef = doc(
+            db,
+            TASKS_COLLECTION_NAME,
+            reorderedPlans[index].id
+          );
           if (reorderedPlans[index].id === taskId) {
             batch.update(itemRef, {
               sortingIndex: index,
