@@ -11,7 +11,7 @@ const manifestForPlugIn: Partial<VitePWAOptions> = {
     start_url: "index.html",
     display: "standalone",
     orientation: "portrait-primary",
-    theme_color: "#3e7bff",
+    theme_color: "#ffffff",
     background_color: "#dde1fb",
     description: "Minimalistic daily planner and to-do list",
     icons: [
