@@ -21,7 +21,7 @@ export const formatDateForHeader = (date: Dayjs): string =>
   date.format("MMM YYYY");
 
 export const formatDateForPlansList = (date: Dayjs): string =>
-  date.format("DD MMM");
+  date.format("D MMM");
 
 export const formatWeekdayForPlansList = (date: Dayjs): string =>
   date.format("ddd");

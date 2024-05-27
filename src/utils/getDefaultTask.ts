@@ -13,4 +13,5 @@ export const getDefaultTask = (
   sortingIndex: sortingIndex,
   color: "transparent",
   uid: uid,
+  initialDate: formatDateForDb(date),
 });

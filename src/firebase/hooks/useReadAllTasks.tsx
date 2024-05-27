@@ -35,6 +35,8 @@ export const useReadAllTasks = () => {
           date: parseDateFromDb(extractedData.date),
           sortingIndex: extractedData.sortingIndex,
           color: extractedData.color,
+          initialDate: parseDateFromDb(extractedData.initialDate),
+          //linkedRecurringTask: extractedData.linkedRecurringTaskId,
         };
       });
 

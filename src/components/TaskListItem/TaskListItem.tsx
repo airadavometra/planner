@@ -14,6 +14,7 @@ import { Draggable } from "@hello-pangea/dnd";
 import { useDeleteTask } from "../../firebase/hooks/useDeleteTask";
 import { useCompleteTask } from "../../firebase/hooks/useCompleteTask";
 import { useUpdateTask } from "../../firebase/hooks/useUpdateTask";
+import { useChangeDate } from "../../firebase/hooks/useChangeDate";
 
 type TaskListItemProps = {
   task: Task;
@@ -28,16 +29,21 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
   const [isCompleted, setIsCompleted] = useState<boolean>(task.isCompleted);
   const [color, setColor] = useState<string>(task.color);
   const [schedule, setSchedule] = useState<string>(
-    task.recurringTask?.schedule || ""
+    task.linkedRecurringTask?.schedule || ""
   );
 
   const deleteTask = useDeleteTask();
   const completeTask = useCompleteTask();
   const updateTask = useUpdateTask();
+  const changeDate = useChangeDate();
 
   useEffect(() => {
     if (!isModalOpen) {
-      updateTask(task.id, title, date, color, task.title);
+      updateTask(task.id, title, color, task.title);
+
+      if (date !== formatDateForInput(task.date)) {
+        changeDate(task.id, task.date, parseDateFromInput(date));
+      }
 
       if (isCompleted !== task.isCompleted) {
         completeTask(task.id, parseDateFromInput(date), isCompleted);
