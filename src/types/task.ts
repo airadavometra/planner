@@ -10,6 +10,7 @@ export type Task = {
   uid: string;
   sortingIndex: number;
   color: Color;
+  linkedRecurringTaskId?: string;
   linkedRecurringTask?: RecurringTask;
   initialDate: Dayjs;
 };

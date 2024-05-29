@@ -18,16 +18,26 @@
   text-align: start;
   overflow: hidden;
 }
-.text {
+.textContainer {
   width: fit-content;
   max-width: 100%;
   padding: 0.25rem 0.75rem;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: min(0.5rem, 12px);
+  border-radius: 1rem;
+}
+.repeatIcon {
+  flex-shrink: 0;
+  width: min(1rem, 20px);
+  height: min(1rem, 20px);
+}
+.text {
+  width: fit-content;
   font-weight: 500;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  border-radius: 1rem;
 }
 .checkButton {
   flex-shrink: 0;
@@ -41,6 +51,7 @@
   opacity: 30%;
   text-decoration: line-through;
 }
+
 @media (hover: none) {
   .checkButton {
     color: var(--text-color);

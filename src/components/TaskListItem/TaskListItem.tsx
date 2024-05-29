@@ -12,9 +12,8 @@ import {
 } from "../../utils/dateFormatting";
 import { Draggable } from "@hello-pangea/dnd";
 import { useDeleteTask } from "../../firebase/hooks/useDeleteTask";
-import { useCompleteTask } from "../../firebase/hooks/useCompleteTask";
 import { useUpdateTask } from "../../firebase/hooks/useUpdateTask";
-import { useChangeDate } from "../../firebase/hooks/useChangeDate";
+import { Repeat } from "../../icons/Repeat";
 
 type TaskListItemProps = {
   task: Task;
@@ -33,9 +32,7 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
   );
 
   const deleteTask = useDeleteTask();
-  const completeTask = useCompleteTask();
-  const updateTask = useUpdateTask();
-  const changeDate = useChangeDate();
+  const { updateTask, changeDate, completeTask, addSchedule } = useUpdateTask();
 
   useEffect(() => {
     if (!isModalOpen) {
@@ -47,6 +44,10 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
 
       if (isCompleted !== task.isCompleted) {
         completeTask(task.id, parseDateFromInput(date), isCompleted);
+      }
+
+      if (!task.linkedRecurringTask && schedule) {
+        addSchedule(task.id, title, parseDateFromInput(date), color, schedule);
       }
     }
   }, [isModalOpen]);
@@ -82,11 +83,12 @@ export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
               onClick={() => setIsModalOpen(true)}
             >
               <span
-                className={classNames(s.text, {
+                className={classNames(s.textContainer, {
                   [task.color]: true,
                 })}
               >
-                {task.title}
+                {schedule && <Repeat className={s.repeatIcon} />}
+                <span className={s.text}>{task.title}</span>
               </span>
             </Button>
             <Button

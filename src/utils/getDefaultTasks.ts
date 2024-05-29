@@ -14,4 +14,20 @@ export const getDefaultTask = (
   color: "transparent",
   uid: uid,
   initialDate: formatDateForDb(date),
+  linkedRecurringTaskId: "",
+});
+
+export const getDefaultRecurringTask = (
+  title: string,
+  uid: string,
+  startDate: Dayjs,
+  color: string,
+  schedule: string
+) => ({
+  uid: uid,
+  title: title,
+  color: color,
+  startDate: formatDateForDb(startDate),
+  schedule: schedule,
+  initialDate: formatDateForDb(startDate),
 });

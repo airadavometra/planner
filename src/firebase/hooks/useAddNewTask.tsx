@@ -1,7 +1,7 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase";
 import { addDoc, collection } from "firebase/firestore";
-import { getDefaultTask } from "../../utils/getDefaultTask";
+import { getDefaultTask } from "../../utils/getDefaultTasks";
 import { Dayjs } from "dayjs";
 import { TASKS_COLLECTION_NAME } from "../constants";
 

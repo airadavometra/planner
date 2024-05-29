@@ -6,25 +6,38 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase";
 import { collection, query, where } from "firebase/firestore";
 import { Task } from "../../types/task";
-import { TASKS_COLLECTION_NAME } from "../constants";
+import {
+  RECURRING_TASKS_COLLECTION_NAME,
+  TASKS_COLLECTION_NAME,
+} from "../constants";
+import { RecurringTask } from "../../types/recurringTask";
 
 export const useReadAllTasks = () => {
   const setTasks = useTasksStore((state) => state.setTasks);
 
   const [user] = useAuthState(auth);
 
-  const dataQuery = user
+  const tasksQuery = user
     ? query(
         collection(db, TASKS_COLLECTION_NAME),
         where("uid", "==", user?.uid || "")
       )
     : null;
 
-  const [value] = useCollection(dataQuery);
+  const [tasksCollection] = useCollection(tasksQuery);
+
+  const recurringTasksQuery = user
+    ? query(
+        collection(db, RECURRING_TASKS_COLLECTION_NAME),
+        where("uid", "==", user?.uid || "")
+      )
+    : null;
+
+  const [recurringTasksCollection] = useCollection(recurringTasksQuery);
 
   useEffect(() => {
-    if (value) {
-      const tasks: Task[] = value.docs.map((data) => {
+    const tasks: Task[] =
+      tasksCollection?.docs.map((data) => {
         const extractedData = data.data();
 
         return {
@@ -36,11 +49,25 @@ export const useReadAllTasks = () => {
           sortingIndex: extractedData.sortingIndex,
           color: extractedData.color,
           initialDate: parseDateFromDb(extractedData.initialDate),
-          //linkedRecurringTask: extractedData.linkedRecurringTaskId,
+          linkedRecurringTaskId: extractedData.linkedRecurringTaskId,
         };
-      });
+      }) || [];
 
-      setTasks(tasks);
-    }
-  }, [value, setTasks]);
+    const recurringTasks: RecurringTask[] =
+      recurringTasksCollection?.docs.map((data) => {
+        const extractedData = data.data();
+
+        return {
+          id: data.id,
+          title: extractedData.title,
+          uid: extractedData.uid,
+          startDate: parseDateFromDb(extractedData.startDate),
+          initialDate: parseDateFromDb(extractedData.initialDate),
+          color: extractedData.color,
+          schedule: extractedData.schedule,
+        };
+      }) || [];
+
+    setTasks(tasks, recurringTasks);
+  }, [tasksCollection, recurringTasksCollection, setTasks]);
 };
