@@ -5,6 +5,7 @@ import { RecurringTask } from "./recurringTask";
 export type Task = {
   id: string;
   title: string;
+  isDeleted: boolean;
   isCompleted: boolean;
   date: Dayjs;
   uid: string;

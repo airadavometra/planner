@@ -44,6 +44,7 @@ export const useReadAllTasks = () => {
           id: data.id,
           title: extractedData.title,
           isCompleted: extractedData.isCompleted,
+          isDeleted: extractedData.isDeleted,
           uid: extractedData.uid,
           date: parseDateFromDb(extractedData.date),
           sortingIndex: extractedData.sortingIndex,

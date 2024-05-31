@@ -22,7 +22,9 @@ type PlansListProps = {
 export const PlansList: FC<PlansListProps> = ({ title, date }) => {
   const tasksMap = useTasksStore((state) => state.tasksMap);
 
-  const plans = tasksMap.get(formatDateForDb(date)) || [];
+  const plans = (tasksMap.get(formatDateForDb(date)) || []).filter(
+    (task) => !task.isDeleted
+  );
 
   const plansListRef = useRef<HTMLDivElement>(null);
 

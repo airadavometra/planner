@@ -1,6 +1,6 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase";
-import { deleteDoc, doc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { TASKS_COLLECTION_NAME } from "../constants";
 
 export const useDeleteTask = () => {
@@ -8,7 +8,10 @@ export const useDeleteTask = () => {
 
   const deleteTask = async (taskId: string) => {
     if (user) {
-      await deleteDoc(doc(db, TASKS_COLLECTION_NAME, taskId));
+      const taskRef = doc(db, TASKS_COLLECTION_NAME, taskId);
+      await updateDoc(taskRef, {
+        isDeleted: true,
+      });
     }
   };
 
