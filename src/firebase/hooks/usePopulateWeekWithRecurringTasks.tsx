@@ -95,8 +95,7 @@ export const usePopulateWeekWithRecurringTasks = () => {
 
   useEffect(() => {
     if (user && !monday.isBefore(dayjs().startOf("week"), "day")) {
-      console.log("populate");
       populateWeekWithRecurringTasks(monday, recurringTasks, tasks);
     }
-  }, [user, monday, recurringTasks, tasks]);
+  }, [user, monday, recurringTasks.length, tasks.length]);
 };

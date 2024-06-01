@@ -1,0 +1,62 @@
+.modalContainer {
+  width: calc(100% - 32px);
+  height: fit-content;
+  max-width: 512px;
+  margin: 128px auto;
+  position: fixed;
+  inset: 0;
+}
+.modal {
+  width: 100%;
+  height: fit-content;
+  padding: min(2rem, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: min(1rem, 20px);
+  border-radius: 16px;
+  background-color: var(--lavender);
+}
+.title {
+  font-size: clamp(1.125rem, 1.0682rem + 0.2841vw, 1.25rem);
+  font-weight: 600;
+}
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: min(0.5rem, 16px);
+}
+.radioItem {
+  display: flex;
+  align-items: center;
+  gap: min(0.5rem, 16px);
+}
+.radioIcon {
+  flex-shrink: 0;
+  width: min(1rem, 20px);
+  height: min(1rem, 20px);
+}
+.buttons {
+  margin-top: min(1.25rem, 28px);
+  display: flex;
+  gap: min(1rem, 20px);
+}
+.button {
+  width: fit-content;
+  padding: min(0.5rem, 12px) min(1.5rem, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: min(1rem, 20px);
+  font-weight: 600;
+  border-radius: 32px;
+}
+.button:hover {
+  opacity: 80%;
+}
+.primary {
+  background-color: var(--black);
+  color: var(--white);
+}
+.secondary {
+  border: 1px solid var(--black);
+}
