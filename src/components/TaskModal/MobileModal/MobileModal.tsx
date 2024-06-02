@@ -42,6 +42,8 @@ export const MobileModal: FC<TaskModalProps> = ({
   const [isChangeScheduleOpen, setIsChangeScheduleOpen] =
     useState<boolean>(false);
 
+  const [newTitle, setNewTitle] = useState<string>(title);
+
   const colors = Object.keys(ColorEnum).map((color) => color.toLowerCase());
   const scheduleOptions = Object.keys(Schedule).map((schedule) =>
     schedule.toLowerCase()
@@ -91,8 +93,9 @@ export const MobileModal: FC<TaskModalProps> = ({
                 type="text"
                 value={title}
                 onChange={(e) => {
-                  onChangeTitle(e.target.value);
+                  setNewTitle(e.target.value);
                 }}
+                onBlur={() => onChangeTitle(newTitle)}
               />
             </div>
             <div className={s.buttonsArea}>

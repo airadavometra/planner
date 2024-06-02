@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import s from "./DesktopModal.module.css";
 import {
   Button,
@@ -40,6 +40,8 @@ export const DesktopModal: FC<TaskModalProps> = ({
   isOpen,
   onClose,
 }) => {
+  const [newTitle, setNewTitle] = useState<string>(title);
+
   const colors = Object.keys(ColorEnum).map((color) => color.toLowerCase());
   const scheduleOptions = Object.keys(Schedule).map((schedule) =>
     schedule.toLowerCase()
@@ -145,8 +147,9 @@ export const DesktopModal: FC<TaskModalProps> = ({
               type="text"
               value={title}
               onChange={(e) => {
-                onChangeTitle(e.target.value);
+                setNewTitle(e.target.value);
               }}
+              onBlur={() => onChangeTitle(newTitle)}
             />
           </div>
         </DialogPanel>
