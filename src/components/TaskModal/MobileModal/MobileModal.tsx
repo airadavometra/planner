@@ -95,7 +95,11 @@ export const MobileModal: FC<TaskModalProps> = ({
                 onChange={(e) => {
                   setNewTitle(e.target.value);
                 }}
-                onBlur={() => onChangeTitle(newTitle)}
+                onBlur={() => {
+                  if (newTitle !== title) {
+                    onChangeTitle(newTitle);
+                  }
+                }}
               />
             </div>
             <div className={s.buttonsArea}>
