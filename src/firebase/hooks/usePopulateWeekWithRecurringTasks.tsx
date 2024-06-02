@@ -18,24 +18,27 @@ dayjs.locale({
 function shouldCreateTaskForDay(date: Dayjs, recTask: RecurringTask): boolean {
   const startDate = recTask.startDate;
 
-  switch (recTask.schedule) {
-    case "daily":
-      return true;
-    case "weekly":
-      return date.day() === startDate.day();
-    case "biweekly": {
-      const weeksDiff = date.diff(startDate, "week");
-      return weeksDiff % 2 === 0 && date.day() === startDate.day();
+  if (!date.isBefore(startDate)) {
+    switch (recTask.schedule) {
+      case "daily":
+        return date.day() >= startDate.day();
+      case "weekly":
+        return date.day() === startDate.day();
+      case "biweekly": {
+        const weeksDiff = date.diff(startDate, "week");
+        return weeksDiff % 2 === 0 && date.day() === startDate.day();
+      }
+      case "monthly":
+        return date.date() === startDate.date();
+      case "yearly":
+        return (
+          date.month() === startDate.month() && date.date() === startDate.date()
+        );
+      default:
+        return false;
     }
-    case "monthly":
-      return date.date() === startDate.date();
-    case "yearly":
-      return (
-        date.month() === startDate.month() && date.date() === startDate.date()
-      );
-    default:
-      return false;
   }
+  return false;
 }
 
 const populateWeekWithRecurringTasks = async (
@@ -48,8 +51,8 @@ const populateWeekWithRecurringTasks = async (
   const newTasks = [];
 
   for (const recurringTask of recurringTasks) {
-    for (let i = 0; i < 7; i++) {
-      if (!recurringTask.isDeleted) {
+    if (!recurringTask.isDeleted) {
+      for (let i = 0; i < 7; i++) {
         const currentDay = monday.add(i, "day");
 
         if (shouldCreateTaskForDay(currentDay, recurringTask)) {

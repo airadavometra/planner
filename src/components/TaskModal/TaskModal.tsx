@@ -9,17 +9,23 @@ import {
 import { Task } from "../../types/task";
 import { useUpdateTask } from "../../firebase/hooks/useUpdateTask";
 import { useDeleteTask } from "../../firebase/hooks/useDeleteTask";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { RecurringTaskConfirmationModal } from "./RecurringTaskConfirmationModal/RecurringTaskConfirmationModal";
 import { RecurringTaskActionMode } from "../../types/recurringTaskActionMode";
 
 type TaskModalProps = {
   task: Task;
+  selectedDate: Dayjs;
   isOpen: boolean;
   onClose: () => void;
 };
 
-export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
+export const TaskModal: FC<TaskModalProps> = ({
+  task,
+  isOpen,
+  selectedDate,
+  onClose,
+}) => {
   const [isRecurringTaskModalOpen, setIsRecurringTaskModalOpen] =
     useState<boolean>(false);
 
@@ -39,6 +45,7 @@ export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
     changeFutureLinkedTasksColor,
     changeDate,
     addSchedule,
+    changeSchedule,
   } = useUpdateTask();
 
   const handleDeleteTask = async (mode: RecurringTaskActionMode) => {
@@ -131,7 +138,13 @@ export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
   };
 
   const handleChangeSchedule = async (newSchedule: string) => {
-    if (!task.linkedRecurringTaskId) {
+    if (task.linkedRecurringTaskId) {
+      await changeSchedule(
+        task.linkedRecurringTaskId,
+        newSchedule,
+        selectedDate
+      );
+    } else {
       await addSchedule(task, newSchedule);
     }
   };

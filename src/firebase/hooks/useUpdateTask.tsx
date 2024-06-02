@@ -312,6 +312,39 @@ export const useUpdateTask = () => {
     [user]
   );
 
+  const changeSchedule = useCallback(
+    async (recurringTaskId: string, schedule: string, selectedDate: Dayjs) => {
+      if (user) {
+        const batch = writeBatch(db);
+
+        const recurringTaskRef = doc(
+          db,
+          RECURRING_TASKS_COLLECTION_NAME,
+          recurringTaskId
+        );
+
+        batch.update(recurringTaskRef, {
+          schedule: schedule,
+        });
+
+        for (const task of tasks) {
+          if (
+            task.linkedRecurringTaskId === recurringTaskId &&
+            !task.initialDate.isBefore(selectedDate, "day") &&
+            !task.isCompleted
+          ) {
+            const taskRef = doc(db, TASKS_COLLECTION_NAME, task.id);
+
+            batch.delete(taskRef);
+          }
+        }
+
+        await batch.commit();
+      }
+    },
+    [user, tasks]
+  );
+
   return {
     completeTask,
     changeTitle,
@@ -322,5 +355,6 @@ export const useUpdateTask = () => {
     changeFutureLinkedTasksColor,
     changeDate,
     addSchedule,
+    changeSchedule,
   };
 };
