@@ -5,12 +5,13 @@ import s from "./PlansGrid.module.css";
 import { useReorderTasks } from "../../firebase/hooks/useReorderTasks";
 import { useState } from "react";
 import { TaskModal } from "../TaskModal/TaskModal";
-import { Task } from "../../types/task";
 import { Dayjs } from "dayjs";
 
 export const PlansGrid = () => {
-  const [taskForEditing, setTaskForEditing] = useState<Task>();
-  const [selectedDate, setSelected] = useState<Dayjs>();
+  const [taskIdForEditing, setTaskIdForEditing] = useState<
+    string | undefined
+  >();
+  const [selectedDate, setSelected] = useState<Dayjs | undefined>();
 
   const monday = useCalendarStore((state) => state.monday);
 
@@ -27,8 +28,8 @@ export const PlansGrid = () => {
     reorderTasks(source, destination);
   };
 
-  const handleOpenTaskModal = (task: Task, date: Dayjs) => {
-    setTaskForEditing(task);
+  const handleOpenTaskModal = (taskId: string, date: Dayjs) => {
+    setTaskIdForEditing(taskId);
     setSelected(date);
   };
 
@@ -38,52 +39,54 @@ export const PlansGrid = () => {
         <div className={s.grid}>
           <PlansList
             date={monday}
-            onOpenTaskModal={(task: Task) => handleOpenTaskModal(task, monday)}
+            onOpenTaskModal={(taskId: string) =>
+              handleOpenTaskModal(taskId, monday)
+            }
           />
           <PlansList
             date={monday.add(1, "day")}
-            onOpenTaskModal={(task: Task) =>
-              handleOpenTaskModal(task, monday.add(1, "day"))
+            onOpenTaskModal={(taskId: string) =>
+              handleOpenTaskModal(taskId, monday.add(1, "day"))
             }
           />
           <PlansList
             date={monday.add(2, "day")}
-            onOpenTaskModal={(task: Task) =>
-              handleOpenTaskModal(task, monday.add(2, "day"))
+            onOpenTaskModal={(taskId: string) =>
+              handleOpenTaskModal(taskId, monday.add(2, "day"))
             }
           />
           <PlansList
             date={monday.add(3, "day")}
-            onOpenTaskModal={(task: Task) =>
-              handleOpenTaskModal(task, monday.add(3, "day"))
+            onOpenTaskModal={(taskId: string) =>
+              handleOpenTaskModal(taskId, monday.add(3, "day"))
             }
           />
           <PlansList
             date={monday.add(4, "day")}
-            onOpenTaskModal={(task: Task) =>
-              handleOpenTaskModal(task, monday.add(4, "day"))
+            onOpenTaskModal={(taskId: string) =>
+              handleOpenTaskModal(taskId, monday.add(4, "day"))
             }
           />
           <PlansList
             date={monday.add(5, "day")}
-            onOpenTaskModal={(task: Task) =>
-              handleOpenTaskModal(task, monday.add(5, "day"))
+            onOpenTaskModal={(taskId: string) =>
+              handleOpenTaskModal(taskId, monday.add(5, "day"))
             }
           />
           <PlansList
             date={monday.add(6, "day")}
-            onOpenTaskModal={(task: Task) =>
-              handleOpenTaskModal(task, monday.add(6, "day"))
+            onOpenTaskModal={(taskId: string) =>
+              handleOpenTaskModal(taskId, monday.add(6, "day"))
             }
           />
         </div>
       </DragDropContext>
-      {taskForEditing && selectedDate && (
+      {taskIdForEditing && selectedDate && (
         <TaskModal
-          task={taskForEditing}
+          taskId={taskIdForEditing}
           selectedDate={selectedDate}
-          isOpen={Boolean(taskForEditing)}
-          onClose={() => setTaskForEditing(undefined)}
+          isOpen={Boolean(taskIdForEditing)}
+          onClose={() => setTaskIdForEditing(undefined)}
         />
       )}
     </>

@@ -12,13 +12,12 @@ import {
   formatWeekdayForPlansList,
 } from "../../utils/dateFormatting";
 import { Droppable } from "@hello-pangea/dnd";
-import { Task } from "../../types/task";
 dayjs.extend(isToday);
 
 type PlansListProps = {
   title?: string;
   date: Dayjs;
-  onOpenTaskModal: (task: Task) => void;
+  onOpenTaskModal: (taskId: string) => void;
 };
 
 export const PlansList: FC<PlansListProps> = ({
@@ -64,7 +63,7 @@ export const PlansList: FC<PlansListProps> = ({
                 key={item.id}
                 task={item}
                 index={index}
-                onOpenTaskModal={() => onOpenTaskModal(item)}
+                onOpenTaskModal={() => onOpenTaskModal(item.id)}
               />
             ))}
             {provided.placeholder}

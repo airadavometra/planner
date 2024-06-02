@@ -6,26 +6,32 @@ import {
   formatDateForInput,
   parseDateFromInput,
 } from "../../utils/dateFormatting";
-import { Task } from "../../types/task";
 import { useUpdateTask } from "../../firebase/hooks/useUpdateTask";
 import { useDeleteTask } from "../../firebase/hooks/useDeleteTask";
 import dayjs, { Dayjs } from "dayjs";
 import { RecurringTaskConfirmationModal } from "./RecurringTaskConfirmationModal/RecurringTaskConfirmationModal";
 import { RecurringTaskActionMode } from "../../types/recurringTaskActionMode";
+import { useTasksStore } from "../../state/useTasks";
 
 type TaskModalProps = {
-  task: Task;
+  taskId: string;
   selectedDate: Dayjs;
   isOpen: boolean;
   onClose: () => void;
 };
 
 export const TaskModal: FC<TaskModalProps> = ({
-  task,
+  taskId,
   isOpen,
   selectedDate,
   onClose,
 }) => {
+  const isMobile = useMediaQuery("(max-width: 64rem)");
+
+  const tasks = useTasksStore((state) => state.tasks);
+
+  const task = tasks.find((item) => item.id === taskId);
+
   const [isRecurringTaskModalOpen, setIsRecurringTaskModalOpen] =
     useState<boolean>(false);
 
@@ -48,6 +54,10 @@ export const TaskModal: FC<TaskModalProps> = ({
     changeSchedule,
   } = useUpdateTask();
 
+  if (task === undefined) {
+    return null;
+  }
+
   const handleDeleteTask = async (mode: RecurringTaskActionMode) => {
     switch (mode) {
       case RecurringTaskActionMode.One: {
@@ -67,6 +77,7 @@ export const TaskModal: FC<TaskModalProps> = ({
         break;
       }
     }
+    onClose();
   };
 
   const handleToggleIsCompleted = async () => {
@@ -148,8 +159,6 @@ export const TaskModal: FC<TaskModalProps> = ({
       await addSchedule(task, newSchedule);
     }
   };
-
-  const isMobile = useMediaQuery("(max-width: 64rem)");
 
   const modalProps = {
     title: task.title,
