@@ -7,78 +7,80 @@ import { useTasksStore } from "../../state/useTasks";
 import { reorderPlans } from "../../utils/reorderPlans";
 import { DraggableLocation } from "@hello-pangea/dnd";
 import { moveTaskToAnotherDay } from "../../utils/moveTaskToAnotherDay";
+import { useCallback } from "react";
 
 export const useReorderTasks = () => {
   const [user] = useAuthState(auth);
   const tasksMap = useTasksStore((state) => state.tasksMap);
 
-  const reorderTasks = async (
-    source: DraggableLocation,
-    destination: DraggableLocation
-  ) => {
-    if (user) {
-      const batch = writeBatch(db);
+  const reorderTasks = useCallback(
+    async (source: DraggableLocation, destination: DraggableLocation) => {
+      if (user) {
+        const batch = writeBatch(db);
 
-      if (source.droppableId === destination.droppableId) {
-        const tasks = tasksMap.get(source.droppableId) || [];
+        if (source.droppableId === destination.droppableId) {
+          const tasks = tasksMap.get(source.droppableId) || [];
 
-        const reorderedPlans = reorderPlans(
-          tasks,
-          source.index,
-          destination.index
-        );
-
-        for (let index = 0; index < reorderedPlans.length; index++) {
-          const itemRef = doc(
-            db,
-            TASKS_COLLECTION_NAME,
-            reorderedPlans[index].id
+          const reorderedPlans = reorderPlans(
+            tasks,
+            source.index,
+            destination.index
           );
-          batch.update(itemRef, {
-            sortingIndex: index,
-            date: formatDateForDb(reorderedPlans[index].date),
-          });
-        }
-      } else {
-        const sourcePlans = tasksMap.get(source.droppableId) || [];
-        const destinationPlans = tasksMap.get(destination.droppableId) || [];
 
-        const [sourcePlansMoved, destinationPlansMoved] = moveTaskToAnotherDay(
-          sourcePlans,
-          destinationPlans,
-          source.index,
-          destination.index,
-          parseDateFromDb(destination.droppableId)
-        );
+          for (let index = 0; index < reorderedPlans.length; index++) {
+            const itemRef = doc(
+              db,
+              TASKS_COLLECTION_NAME,
+              reorderedPlans[index].id
+            );
+            batch.update(itemRef, {
+              sortingIndex: index,
+              date: formatDateForDb(reorderedPlans[index].date),
+            });
+          }
+        } else {
+          const sourcePlans = tasksMap.get(source.droppableId) || [];
+          const destinationPlans = tasksMap.get(destination.droppableId) || [];
 
-        for (let index = 0; index < sourcePlansMoved.length; index++) {
-          const itemRef = doc(
-            db,
-            TASKS_COLLECTION_NAME,
-            sourcePlansMoved[index].id
-          );
-          batch.update(itemRef, {
-            sortingIndex: index,
-            date: formatDateForDb(sourcePlansMoved[index].date),
-          });
+          const [sourcePlansMoved, destinationPlansMoved] =
+            moveTaskToAnotherDay(
+              sourcePlans,
+              destinationPlans,
+              source.index,
+              destination.index,
+              parseDateFromDb(destination.droppableId)
+            );
+
+          for (let index = 0; index < sourcePlansMoved.length; index++) {
+            const itemRef = doc(
+              db,
+              TASKS_COLLECTION_NAME,
+              sourcePlansMoved[index].id
+            );
+            batch.update(itemRef, {
+              sortingIndex: index,
+              date: formatDateForDb(sourcePlansMoved[index].date),
+            });
+          }
+
+          for (let index = 0; index < destinationPlansMoved.length; index++) {
+            const itemRef = doc(
+              db,
+              TASKS_COLLECTION_NAME,
+              destinationPlansMoved[index].id
+            );
+            batch.update(itemRef, {
+              sortingIndex: index,
+              date: formatDateForDb(destinationPlansMoved[index].date),
+            });
+          }
         }
 
-        for (let index = 0; index < destinationPlansMoved.length; index++) {
-          const itemRef = doc(
-            db,
-            TASKS_COLLECTION_NAME,
-            destinationPlansMoved[index].id
-          );
-          batch.update(itemRef, {
-            sortingIndex: index,
-            date: formatDateForDb(destinationPlansMoved[index].date),
-          });
-        }
+        await batch.commit();
       }
-
-      await batch.commit();
-    }
-  };
+    },
+    [user, tasksMap]
+  );
 
   return reorderTasks;
 };
