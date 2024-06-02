@@ -91,7 +91,7 @@ export const MobileModal: FC<TaskModalProps> = ({
                 })}
                 autoFocus
                 type="text"
-                value={title}
+                value={newTitle}
                 onChange={(e) => {
                   setNewTitle(e.target.value);
                 }}
