@@ -16,7 +16,10 @@ import { Task } from "../../types/task";
 
 export const useUpdateTask = () => {
   const [user] = useAuthState(auth);
-  const tasksMap = useTasksStore((state) => state.tasksMap);
+  const { tasksMap, tasks } = useTasksStore((state) => ({
+    tasksMap: state.tasksMap,
+    tasks: state.tasks,
+  }));
 
   const completeTask = useCallback(
     async (taskId: string, date: Dayjs, isCompleted: boolean) => {
@@ -82,6 +85,71 @@ export const useUpdateTask = () => {
     [user]
   );
 
+  const changeAllLinkedTasksTitle = useCallback(
+    async (recurringTaskId: string, title: string) => {
+      if (user) {
+        const batch = writeBatch(db);
+
+        const recurringTaskRef = doc(
+          db,
+          RECURRING_TASKS_COLLECTION_NAME,
+          recurringTaskId
+        );
+
+        batch.update(recurringTaskRef, {
+          title: title,
+        });
+
+        for (const task of tasks) {
+          if (task.linkedRecurringTaskId === recurringTaskId) {
+            const taskRef = doc(db, TASKS_COLLECTION_NAME, task.id);
+
+            batch.update(taskRef, {
+              title: title,
+            });
+          }
+        }
+
+        await batch.commit();
+      }
+    },
+    [user, tasks]
+  );
+
+  const changeFutureLinkedTasksTitle = useCallback(
+    async (recurringTaskId: string, date: Dayjs, title: string) => {
+      if (user) {
+        const batch = writeBatch(db);
+
+        const recurringTaskRef = doc(
+          db,
+          RECURRING_TASKS_COLLECTION_NAME,
+          recurringTaskId
+        );
+
+        batch.update(recurringTaskRef, {
+          title: title,
+        });
+
+        for (const task of tasks) {
+          if (
+            task.linkedRecurringTaskId === recurringTaskId &&
+            !task.initialDate.isBefore(date, "day")
+          ) {
+            const taskRef = doc(db, TASKS_COLLECTION_NAME, task.id);
+
+            batch.update(taskRef, {
+              title: title,
+            });
+          }
+        }
+
+        await batch.commit();
+      }
+    },
+    [user, tasks]
+  );
+
   const changeColor = useCallback(
     async (taskId: string, color: string) => {
       if (user) {
@@ -93,6 +161,71 @@ export const useUpdateTask = () => {
       }
     },
     [user]
+  );
+
+  const changeAllLinkedTasksColor = useCallback(
+    async (recurringTaskId: string, color: string) => {
+      if (user) {
+        const batch = writeBatch(db);
+
+        const recurringTaskRef = doc(
+          db,
+          RECURRING_TASKS_COLLECTION_NAME,
+          recurringTaskId
+        );
+
+        batch.update(recurringTaskRef, {
+          color: color,
+        });
+
+        for (const task of tasks) {
+          if (task.linkedRecurringTaskId === recurringTaskId) {
+            const taskRef = doc(db, TASKS_COLLECTION_NAME, task.id);
+
+            batch.update(taskRef, {
+              color: color,
+            });
+          }
+        }
+
+        await batch.commit();
+      }
+    },
+    [user, tasks]
+  );
+
+  const changeFutureLinkedTasksColor = useCallback(
+    async (recurringTaskId: string, date: Dayjs, color: string) => {
+      if (user) {
+        const batch = writeBatch(db);
+
+        const recurringTaskRef = doc(
+          db,
+          RECURRING_TASKS_COLLECTION_NAME,
+          recurringTaskId
+        );
+
+        batch.update(recurringTaskRef, {
+          color: color,
+        });
+
+        for (const task of tasks) {
+          if (
+            task.linkedRecurringTaskId === recurringTaskId &&
+            !task.initialDate.isBefore(date, "day")
+          ) {
+            const taskRef = doc(db, TASKS_COLLECTION_NAME, task.id);
+
+            batch.update(taskRef, {
+              color: color,
+            });
+          }
+        }
+
+        await batch.commit();
+      }
+    },
+    [user, tasks]
   );
 
   const changeDate = useCallback(
@@ -179,5 +312,15 @@ export const useUpdateTask = () => {
     [user]
   );
 
-  return { completeTask, changeTitle, changeColor, changeDate, addSchedule };
+  return {
+    completeTask,
+    changeTitle,
+    changeAllLinkedTasksTitle,
+    changeFutureLinkedTasksTitle,
+    changeColor,
+    changeAllLinkedTasksColor,
+    changeFutureLinkedTasksColor,
+    changeDate,
+    addSchedule,
+  };
 };

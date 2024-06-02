@@ -29,8 +29,17 @@ export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
 
   const { deleteTask, deleteAllLinkedTasks, deleteFutureLinkedTasks } =
     useDeleteTask();
-  const { completeTask, changeTitle, changeColor, changeDate, addSchedule } =
-    useUpdateTask();
+  const {
+    completeTask,
+    changeTitle,
+    changeAllLinkedTasksTitle,
+    changeFutureLinkedTasksTitle,
+    changeColor,
+    changeAllLinkedTasksColor,
+    changeFutureLinkedTasksColor,
+    changeDate,
+    addSchedule,
+  } = useUpdateTask();
 
   const handleDeleteTask = async (mode: RecurringTaskActionMode) => {
     switch (mode) {
@@ -57,12 +66,60 @@ export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
     await completeTask(task.id, task.date, !task.isCompleted);
   };
 
-  const handleChangeTitle = async (newTitle: string) => {
-    await changeTitle(task.id, newTitle);
+  const handleChangeTitle = async (
+    newTitle: string,
+    mode: RecurringTaskActionMode
+  ) => {
+    switch (mode) {
+      case RecurringTaskActionMode.One: {
+        await changeTitle(task.id, newTitle);
+        break;
+      }
+      case RecurringTaskActionMode.All: {
+        if (task.linkedRecurringTaskId) {
+          await changeAllLinkedTasksTitle(task.linkedRecurringTaskId, newTitle);
+        }
+        break;
+      }
+      case RecurringTaskActionMode.Future: {
+        if (task.linkedRecurringTaskId) {
+          await changeFutureLinkedTasksTitle(
+            task.linkedRecurringTaskId,
+            task.date,
+            newTitle
+          );
+        }
+        break;
+      }
+    }
   };
 
-  const handleChangeColor = async (newColor: string) => {
-    await changeColor(task.id, newColor);
+  const handleChangeColor = async (
+    newColor: string,
+    mode: RecurringTaskActionMode
+  ) => {
+    switch (mode) {
+      case RecurringTaskActionMode.One: {
+        await changeColor(task.id, newColor);
+        break;
+      }
+      case RecurringTaskActionMode.All: {
+        if (task.linkedRecurringTaskId) {
+          await changeAllLinkedTasksColor(task.linkedRecurringTaskId, newColor);
+        }
+        break;
+      }
+      case RecurringTaskActionMode.Future: {
+        if (task.linkedRecurringTaskId) {
+          await changeFutureLinkedTasksColor(
+            task.linkedRecurringTaskId,
+            task.date,
+            newColor
+          );
+        }
+        break;
+      }
+    }
   };
 
   const handleChangeDate = async (newDate: string) => {
@@ -83,13 +140,29 @@ export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
 
   const modalProps = {
     title: task.title,
-    onChangeTitle: handleChangeTitle,
+    onChangeTitle: (newTitle: string) => {
+      if (task.linkedRecurringTaskId) {
+        setIsRecurringTaskModalOpen(true);
+        handleSubmitRef.current = (mode: RecurringTaskActionMode) =>
+          handleChangeTitle(newTitle, mode);
+      } else {
+        handleChangeTitle(newTitle, RecurringTaskActionMode.One);
+      }
+    },
     date: formatDateForInput(task.date),
     onChangeDate: handleChangeDate,
     isCompleted: task.isCompleted,
     onToggleIsCompleted: handleToggleIsCompleted,
     color: task.color,
-    onChangeColor: handleChangeColor,
+    onChangeColor: (newColor: string) => {
+      if (task.linkedRecurringTaskId) {
+        setIsRecurringTaskModalOpen(true);
+        handleSubmitRef.current = (mode: RecurringTaskActionMode) =>
+          handleChangeColor(newColor, mode);
+      } else {
+        handleChangeColor(newColor, RecurringTaskActionMode.One);
+      }
+    },
     schedule: (task.linkedRecurringTask?.schedule || "").toString(),
     onChangeSchedule: handleChangeSchedule,
     onDelete: () => {
