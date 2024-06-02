@@ -12,14 +12,20 @@ import {
   formatWeekdayForPlansList,
 } from "../../utils/dateFormatting";
 import { Droppable } from "@hello-pangea/dnd";
+import { Task } from "../../types/task";
 dayjs.extend(isToday);
 
 type PlansListProps = {
   title?: string;
   date: Dayjs;
+  onOpenTaskModal: (task: Task) => void;
 };
 
-export const PlansList: FC<PlansListProps> = ({ title, date }) => {
+export const PlansList: FC<PlansListProps> = ({
+  title,
+  date,
+  onOpenTaskModal,
+}) => {
   const tasksMap = useTasksStore((state) => state.tasksMap);
 
   const plans = (tasksMap.get(formatDateForDb(date)) || []).filter(
@@ -54,7 +60,12 @@ export const PlansList: FC<PlansListProps> = ({ title, date }) => {
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             {plans.map((item, index) => (
-              <TaskListItem key={item.id} task={item} index={index} />
+              <TaskListItem
+                key={item.id}
+                task={item}
+                index={index}
+                onOpenTaskModal={() => onOpenTaskModal(item)}
+              />
             ))}
             {provided.placeholder}
           </div>

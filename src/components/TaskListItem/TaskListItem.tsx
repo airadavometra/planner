@@ -1,132 +1,72 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import s from "./TaskListItem.module.css";
 import { Check } from "../../icons/Check";
 import classNames from "classnames";
 import { Task } from "../../types/task";
-import { TaskModal } from "../TaskModal/TaskModal";
 import { Button } from "@headlessui/react";
-import dayjs from "dayjs";
-import {
-  formatDateForInput,
-  parseDateFromInput,
-} from "../../utils/dateFormatting";
 import { Draggable } from "@hello-pangea/dnd";
-import { useDeleteTask } from "../../firebase/hooks/useDeleteTask";
 import { useUpdateTask } from "../../firebase/hooks/useUpdateTask";
 import { Repeat } from "../../icons/Repeat";
 
 type TaskListItemProps = {
   task: Task;
   index: number;
+  onOpenTaskModal: () => void;
 };
 
-export const TaskListItem: FC<TaskListItemProps> = ({ task, index }) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const [title, setTitle] = useState<string>(task.title);
-  const [date, setDate] = useState<string>(formatDateForInput(task.date));
-  const [isCompleted, setIsCompleted] = useState<boolean>(task.isCompleted);
-  const [color, setColor] = useState<string>(task.color);
-  const [schedule, setSchedule] = useState<string>(
-    task.linkedRecurringTask?.schedule || ""
-  );
-
-  const deleteTask = useDeleteTask();
-  const { updateTask, changeDate, completeTask, addSchedule } = useUpdateTask();
-
-  useEffect(() => {
-    if (!isModalOpen) {
-      updateTask(task.id, title, color, task.title);
-
-      if (date !== formatDateForInput(task.date)) {
-        changeDate(task.id, task.date, parseDateFromInput(date));
-      }
-
-      if (isCompleted !== task.isCompleted) {
-        completeTask(task.id, parseDateFromInput(date), isCompleted);
-      }
-
-      if (!task.linkedRecurringTask && schedule) {
-        addSchedule(task.id, title, parseDateFromInput(date), color, schedule);
-      }
-    }
-  }, [isModalOpen]);
-
-  const handleDeleteTask = async () => {
-    await deleteTask(task.id);
-  };
+export const TaskListItem: FC<TaskListItemProps> = ({
+  task,
+  index,
+  onOpenTaskModal,
+}) => {
+  const { completeTask } = useUpdateTask();
 
   const handleCompleteTask = async (isCompleted: boolean) => {
-    await completeTask(task.id, parseDateFromInput(date), isCompleted);
+    await completeTask(task.id, task.date, isCompleted);
   };
 
   return (
-    <>
-      <Draggable
-        key={task.id}
-        draggableId={task.id}
-        index={index}
-        disableInteractiveElementBlocking
-      >
-        {(provided) => (
-          <div
-            className={s.container}
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            style={provided.draggableProps.style}
+    <Draggable
+      key={task.id}
+      draggableId={task.id}
+      index={index}
+      disableInteractiveElementBlocking
+    >
+      {(provided) => (
+        <div
+          className={s.container}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          style={provided.draggableProps.style}
+        >
+          <Button
+            className={classNames(s.textButton, {
+              [s.checked]: task.isCompleted,
+            })}
+            onClick={onOpenTaskModal}
           >
-            <Button
-              className={classNames(s.textButton, {
-                [s.checked]: task.isCompleted,
+            <span
+              className={classNames(s.textContainer, {
+                [task.color]: true,
               })}
-              onClick={() => setIsModalOpen(true)}
             >
-              <span
-                className={classNames(s.textContainer, {
-                  [task.color]: true,
-                })}
-              >
-                {schedule && <Repeat className={s.repeatIcon} />}
-                <span className={s.text}>{task.title}</span>
-              </span>
-            </Button>
-            <Button
-              className={classNames(s.checkButton, {
-                [s.checked]: task.isCompleted,
-              })}
-              onClick={() => {
-                setIsCompleted((prev) => {
-                  handleCompleteTask(!prev);
-                  return !prev;
-                });
-              }}
-            >
-              <Check className={s.checkIcon} />
-            </Button>
-          </div>
-        )}
-      </Draggable>
-      {isModalOpen && (
-        <TaskModal
-          title={title}
-          onChangeTitle={setTitle}
-          date={date}
-          onChangeDate={(newDate: string) => {
-            const isValid = newDate.length > 0 && dayjs(date).isValid();
-            setDate(isValid ? newDate : formatDateForInput(task.date));
-          }}
-          isCompleted={isCompleted}
-          onToggleIsCompleted={() => setIsCompleted((prev) => !prev)}
-          color={color}
-          onChangeColor={setColor}
-          schedule={schedule}
-          onChangeSchedule={setSchedule}
-          onDelete={handleDeleteTask}
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
+              {task.linkedRecurringTaskId && (
+                <Repeat className={s.repeatIcon} />
+              )}
+              <span className={s.text}>{task.title}</span>
+            </span>
+          </Button>
+          <Button
+            className={classNames(s.checkButton, {
+              [s.checked]: task.isCompleted,
+            })}
+            onClick={() => handleCompleteTask(!task.isCompleted)}
+          >
+            <Check className={s.checkIcon} />
+          </Button>
+        </div>
       )}
-    </>
+    </Draggable>
   );
 };

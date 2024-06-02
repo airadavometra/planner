@@ -1,5 +1,4 @@
 import { FC, useState } from "react";
-import { TaskModalProps } from "../TaskModal";
 import s from "./MobileModal.module.css";
 import {
   Button,
@@ -22,6 +21,7 @@ import { Check } from "../../../icons/Check";
 import { Close } from "../../../icons/Close";
 import { Color as ColorEnum } from "../../../types/color";
 import { Schedule } from "../../../types/schedule";
+import { TaskModalProps } from "../TaskModalProps";
 
 export const MobileModal: FC<TaskModalProps> = ({
   title,

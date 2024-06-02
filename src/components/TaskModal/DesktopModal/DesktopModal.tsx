@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { TaskModalProps } from "../TaskModal";
 import s from "./DesktopModal.module.css";
 import {
   Button,
@@ -24,6 +23,7 @@ import classNames from "classnames";
 import { Check } from "../../../icons/Check";
 import { Color as ColorEnum } from "../../../types/color";
 import { Schedule } from "../../../types/schedule";
+import { TaskModalProps } from "../TaskModalProps";
 
 export const DesktopModal: FC<TaskModalProps> = ({
   title,
