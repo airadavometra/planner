@@ -66,6 +66,7 @@ export const useReadAllTasks = () => {
           initialDate: parseDateFromDb(extractedData.initialDate),
           color: extractedData.color,
           schedule: extractedData.schedule,
+          isDeleted: extractedData.isDeleted,
         };
       }) || [];
 

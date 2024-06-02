@@ -10,4 +10,5 @@ export type RecurringTask = {
   uid: string;
   color: Color;
   schedule: Schedule;
+  isDeleted: boolean;
 };

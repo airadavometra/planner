@@ -10,32 +10,38 @@ import {
   RadioGroup,
 } from "@headlessui/react";
 import classNames from "classnames";
-import { Check } from "../../icons/Check";
-import { Circle } from "../../icons/Circle";
+import { Check } from "../../../icons/Check";
+import { Circle } from "../../../icons/Circle";
+import { RecurringTaskActionMode } from "../../../types/recurringTaskActionMode";
 
-type RecurringTaskConfirmationModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (() => void) | null;
-};
-
-const options = ["one", "future", "all"];
 const optionTexts = [
   "Only this task",
   "This and future tasks",
   "All linked tasks",
 ];
 
+type RecurringTaskConfirmationModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (mode: RecurringTaskActionMode) => void;
+};
+
 export const RecurringTaskConfirmationModal: FC<
   RecurringTaskConfirmationModalProps
 > = ({ isOpen, onClose, onSubmit }) => {
-  const [selectedValue, setSelectedValue] = useState<string>(options[0]);
+  const [selectedValue, setSelectedValue] = useState<RecurringTaskActionMode>(
+    RecurringTaskActionMode.One
+  );
+
+  const options = Object.keys(RecurringTaskActionMode).map((color) =>
+    color.toLowerCase()
+  );
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      {/* <div className={s.backdropFilter} aria-hidden="true">
+      <div className={s.backdropFilter} aria-hidden="true">
         <div className={s.backdropColor} aria-hidden="true" />
-      </div> */}
+      </div>
       <div className={s.modalContainer}>
         <DialogPanel className={s.modal}>
           <h1 className={s.title}>This task is recurring</h1>
@@ -59,14 +65,12 @@ export const RecurringTaskConfirmationModal: FC<
             ))}
           </RadioGroup>
           <div className={s.buttons}>
-            {onSubmit && (
-              <Button
-                className={classNames(s.button, s.primary)}
-                onClick={() => onSubmit()}
-              >
-                OK
-              </Button>
-            )}
+            <Button
+              className={classNames(s.button, s.primary)}
+              onClick={() => onSubmit(selectedValue)}
+            >
+              OK
+            </Button>
             <Button
               className={classNames(s.button, s.secondary)}
               onClick={onClose}

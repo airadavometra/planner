@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useRef, useState } from "react";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { DesktopModal } from "./DesktopModal/DesktopModal";
 import { MobileModal } from "./MobileModal/MobileModal";
@@ -10,6 +10,8 @@ import { Task } from "../../types/task";
 import { useUpdateTask } from "../../firebase/hooks/useUpdateTask";
 import { useDeleteTask } from "../../firebase/hooks/useDeleteTask";
 import dayjs from "dayjs";
+import { RecurringTaskConfirmationModal } from "./RecurringTaskConfirmationModal/RecurringTaskConfirmationModal";
+import { RecurringTaskActionMode } from "../../types/recurringTaskActionMode";
 
 type TaskModalProps = {
   task: Task;
@@ -18,38 +20,37 @@ type TaskModalProps = {
 };
 
 export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
-  // const [title, setTitle] = useState<string>(task.title);
-  // const [date, setDate] = useState<string>(formatDateForInput(task.date));
-  // const [isCompleted, setIsCompleted] = useState<boolean>(task.isCompleted);
-  // const [color, setColor] = useState<string>(task.color);
-  // const [schedule, setSchedule] = useState<string>(
-  //   task.linkedRecurringTask?.schedule || ""
-  // );
+  const [isRecurringTaskModalOpen, setIsRecurringTaskModalOpen] =
+    useState<boolean>(false);
 
-  const { deleteTask } = useDeleteTask();
+  const handleSubmitRef = useRef<
+    ((mode: RecurringTaskActionMode) => void) | null
+  >(null);
+
+  const { deleteTask, deleteAllLinkedTasks, deleteFutureLinkedTasks } =
+    useDeleteTask();
   const { completeTask, changeTitle, changeColor, changeDate, addSchedule } =
     useUpdateTask();
 
-  // useEffect(() => {
-  //   if (!isModalOpen) {
-  //     updateTask(task.id, title, color, task.title);
-
-  //     if (date !== formatDateForInput(task.date)) {
-  //       changeDate(task.id, task.date, parseDateFromInput(date));
-  //     }
-
-  //     if (isCompleted !== task.isCompleted) {
-  //       completeTask(task.id, parseDateFromInput(date), isCompleted);
-  //     }
-
-  //     if (!task.linkedRecurringTask && schedule) {
-  //       addSchedule(task.id, title, parseDateFromInput(date), color, schedule);
-  //     }
-  //   }
-  // }, [isModalOpen]);
-
-  const handleDeleteTask = async () => {
-    await deleteTask(task.id);
+  const handleDeleteTask = async (mode: RecurringTaskActionMode) => {
+    switch (mode) {
+      case RecurringTaskActionMode.One: {
+        await deleteTask(task.id);
+        break;
+      }
+      case RecurringTaskActionMode.All: {
+        if (task.linkedRecurringTaskId) {
+          await deleteAllLinkedTasks(task.linkedRecurringTaskId);
+        }
+        break;
+      }
+      case RecurringTaskActionMode.Future: {
+        if (task.linkedRecurringTaskId) {
+          await deleteFutureLinkedTasks(task.linkedRecurringTaskId, task.date);
+        }
+        break;
+      }
+    }
   };
 
   const handleToggleIsCompleted = async () => {
@@ -91,12 +92,29 @@ export const TaskModal: FC<TaskModalProps> = ({ task, isOpen, onClose }) => {
     onChangeColor: handleChangeColor,
     schedule: (task.linkedRecurringTask?.schedule || "").toString(),
     onChangeSchedule: handleChangeSchedule,
-    onDelete: handleDeleteTask,
+    onDelete: () => {
+      if (task.linkedRecurringTaskId) {
+        setIsRecurringTaskModalOpen(true);
+        handleSubmitRef.current = handleDeleteTask;
+      } else {
+        handleDeleteTask(RecurringTaskActionMode.One);
+      }
+    },
     isOpen: isOpen,
     onClose: onClose,
   };
 
-  return isMobile ? (
+  return isRecurringTaskModalOpen ? (
+    <RecurringTaskConfirmationModal
+      isOpen={isRecurringTaskModalOpen}
+      onClose={() => setIsRecurringTaskModalOpen(false)}
+      onSubmit={(mode: RecurringTaskActionMode) => {
+        handleSubmitRef.current && handleSubmitRef.current(mode);
+        setIsRecurringTaskModalOpen(false);
+        onClose();
+      }}
+    />
+  ) : isMobile ? (
     <MobileModal {...modalProps} />
   ) : (
     <DesktopModal {...modalProps} />

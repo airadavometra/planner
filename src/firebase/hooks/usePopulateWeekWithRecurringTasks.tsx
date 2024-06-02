@@ -49,20 +49,22 @@ const populateWeekWithRecurringTasks = async (
 
   for (const recurringTask of recurringTasks) {
     for (let i = 0; i < 7; i++) {
-      const currentDay = monday.add(i, "day");
+      if (!recurringTask.isDeleted) {
+        const currentDay = monday.add(i, "day");
 
-      if (shouldCreateTaskForDay(currentDay, recurringTask)) {
-        const task = {
-          title: recurringTask.title,
-          date: formatDateForDb(currentDay),
-          isCompleted: false,
-          sortingIndex: 0,
-          color: recurringTask.color,
-          uid: recurringTask.uid,
-          initialDate: formatDateForDb(currentDay),
-          linkedRecurringTaskId: recurringTask.id,
-        };
-        newTasks.push(task);
+        if (shouldCreateTaskForDay(currentDay, recurringTask)) {
+          const task = {
+            title: recurringTask.title,
+            date: formatDateForDb(currentDay),
+            isCompleted: false,
+            sortingIndex: 0,
+            color: recurringTask.color,
+            uid: recurringTask.uid,
+            initialDate: formatDateForDb(currentDay),
+            linkedRecurringTaskId: recurringTask.id,
+          };
+          newTasks.push(task);
+        }
       }
     }
   }
