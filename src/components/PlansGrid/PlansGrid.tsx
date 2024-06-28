@@ -3,7 +3,7 @@ import { useCalendarStore } from "../../state/useCalendar";
 import { PlansList } from "../PlansList/PlansList";
 import s from "./PlansGrid.module.css";
 import { useReorderTasks } from "../../firebase/hooks/useReorderTasks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TaskModal } from "../TaskModal/TaskModal";
 import { Dayjs } from "dayjs";
 
@@ -14,6 +14,10 @@ export const PlansGrid = () => {
   const [selectedDate, setSelected] = useState<Dayjs | undefined>();
 
   const monday = useCalendarStore((state) => state.monday);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [monday]);
 
   const reorderTasks = useReorderTasks();
 
