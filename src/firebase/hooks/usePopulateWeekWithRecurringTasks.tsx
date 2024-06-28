@@ -15,6 +15,8 @@ dayjs.locale({
   weekStart: 1,
 });
 
+const isLastDayOfMonth = (date: Dayjs) => date.date() === date.daysInMonth();
+
 function shouldCreateTaskForDay(date: Dayjs, recTask: RecurringTask): boolean {
   const startDate = recTask.startDate;
 
@@ -29,7 +31,10 @@ function shouldCreateTaskForDay(date: Dayjs, recTask: RecurringTask): boolean {
         return weeksDiff % 2 === 0 && date.day() === startDate.day();
       }
       case "monthly":
-        return date.date() === startDate.date();
+        return (
+          date.date() === startDate.date() ||
+          (isLastDayOfMonth(startDate) && isLastDayOfMonth(date))
+        );
       case "yearly":
         return (
           date.month() === startDate.month() && date.date() === startDate.date()
