@@ -9,7 +9,7 @@
   --black: #000000;
   --white: #ffffff;
   --black-transparent: #0000001a;
-  --white-transparent: #ffffff1a;
+  --white-transparent: hsla(0, 0%, 100%, 0.102);
 
   --sky-blue: #3e7bff;
 
@@ -18,10 +18,14 @@
   --blue: #87a8ee;
   --yellow: #ffdd53;
   --red: #f18989;
-  --pink: #fdad6b;
+  --orange: #fdad6b;
   --green: #5fc179;
   --purple: #b98edc;
   --grey: #b4b4b8;
+  --pink: #de7cb2;
+  --mint: #99edcc;
+  --beige: #e3bc9a;
+  --lime: #c8df52;
 
   --text-color: var(--black);
   --text-color-transparent: var(--black-transparent);
@@ -85,4 +89,16 @@ a {
 }
 .grey {
   background-color: var(--grey) !important;
+}
+.orange {
+  background-color: var(--orange) !important;
+}
+.mint {
+  background-color: var(--mint) !important;
+}
+.beige {
+  background-color: var(--beige) !important;
+}
+.lime {
+  background-color: var(--lime) !important;
 }

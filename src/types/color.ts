@@ -1,10 +1,14 @@
 export enum Color {
   Transparent = "transparent",
-  Yellow = "yellow",
   Red = "red",
-  Pink = "pink",
+  Orange = "orange",
+  Yellow = "yellow",
+  Lime = "lime",
   Green = "green",
+  Mint = "mint",
   Blue = "blue",
   Purple = "purple",
+  Pink = "pink",
+  Beige = "beige",
   Grey = "grey",
 }
