@@ -22,7 +22,7 @@ export const NewTaskInput: FC<NewTaskInputProps> = ({ plansCount, date }) => {
   const handleSave = async () => {
     setTaskTitle("");
 
-    await addNewTask(taskTitle, date, plansCount);
+    await addNewTask(taskTitle, date);
   };
 
   const maxTasksCount = useMaxTasksCount();

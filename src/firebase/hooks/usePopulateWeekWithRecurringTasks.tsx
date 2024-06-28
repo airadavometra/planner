@@ -65,7 +65,8 @@ function shouldCreateTaskForDay(date: Dayjs, recTask: RecurringTask): boolean {
 const populateWeekWithRecurringTasks = async (
   monday: Dayjs,
   recurringTasks: RecurringTask[],
-  tasks: Task[]
+  tasks: Task[],
+  tasksMap: Map<string, Task[]>
 ) => {
   const batch = writeBatch(db);
 
@@ -101,8 +102,17 @@ const populateWeekWithRecurringTasks = async (
     );
 
     if (!taskAlreadyExists) {
-      const taskRef = doc(collection(db, TASKS_COLLECTION_NAME));
-      batch.set(taskRef, newTask);
+      const newTaskRef = doc(collection(db, TASKS_COLLECTION_NAME));
+      batch.set(newTaskRef, newTask);
+
+      const otherTasks = tasksMap.get(newTask.date) || [];
+
+      for (let index = 0; index < otherTasks.length; index++) {
+        const itemRef = doc(db, TASKS_COLLECTION_NAME, otherTasks[index].id);
+        batch.update(itemRef, {
+          sortingIndex: index + 1,
+        });
+      }
     }
   }
 
@@ -112,16 +122,17 @@ const populateWeekWithRecurringTasks = async (
 export const usePopulateWeekWithRecurringTasks = () => {
   const [user] = useAuthState(auth);
 
-  const { tasks, recurringTasks } = useTasksStore((state) => ({
+  const { tasks, recurringTasks, tasksMap } = useTasksStore((state) => ({
     tasks: state.tasks,
     recurringTasks: state.recurringTasks,
+    tasksMap: state.tasksMap,
   }));
 
   const monday = useCalendarStore((state) => state.monday);
 
   useEffect(() => {
     if (user && !monday.isBefore(dayjs().startOf("week"), "day")) {
-      populateWeekWithRecurringTasks(monday, recurringTasks, tasks);
+      populateWeekWithRecurringTasks(monday, recurringTasks, tasks, tasksMap);
     }
   }, [user, monday, recurringTasks.length, tasks.length]);
 };
