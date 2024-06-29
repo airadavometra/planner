@@ -5,7 +5,9 @@ export const reorderPlans = (
   sourceIndex: number,
   destinationIndex: number
 ): Task[] => {
-  const reorderedPlans = [...plans];
+  const reorderedPlans = [...plans]
+    .filter((task) => !task.isDeleted)
+    .sort((a, b) => a.sortingIndex - b.sortingIndex);
   const [removed] = reorderedPlans.splice(sourceIndex, 1);
   reorderedPlans.splice(destinationIndex, 0, removed);
 
