@@ -37,42 +37,38 @@ export const useReadAllTasks = () => {
 
   useEffect(() => {
     const tasks: Task[] =
-      tasksCollection?.docs
-        .map((data) => {
-          const extractedData = data.data();
+      tasksCollection?.docs.map((data) => {
+        const extractedData = data.data();
 
-          return {
-            id: data.id,
-            title: extractedData.title,
-            isCompleted: extractedData.isCompleted,
-            isDeleted: extractedData.isDeleted,
-            uid: extractedData.uid,
-            date: parseDateFromDb(extractedData.date),
-            sortingIndex: extractedData.sortingIndex,
-            color: extractedData.color,
-            initialDate: parseDateFromDb(extractedData.initialDate),
-            linkedRecurringTaskId: extractedData.linkedRecurringTaskId,
-          };
-        })
-        .filter((task) => !task.isDeleted) || [];
+        return {
+          id: data.id,
+          title: extractedData.title,
+          isCompleted: extractedData.isCompleted,
+          isDeleted: extractedData.isDeleted,
+          uid: extractedData.uid,
+          date: parseDateFromDb(extractedData.date),
+          sortingIndex: extractedData.sortingIndex,
+          color: extractedData.color,
+          initialDate: parseDateFromDb(extractedData.initialDate),
+          linkedRecurringTaskId: extractedData.linkedRecurringTaskId,
+        };
+      }) || [];
 
     const recurringTasks: RecurringTask[] =
-      recurringTasksCollection?.docs
-        .map((data) => {
-          const extractedData = data.data();
+      recurringTasksCollection?.docs.map((data) => {
+        const extractedData = data.data();
 
-          return {
-            id: data.id,
-            title: extractedData.title,
-            uid: extractedData.uid,
-            startDate: parseDateFromDb(extractedData.startDate),
-            initialDate: parseDateFromDb(extractedData.initialDate),
-            color: extractedData.color,
-            schedule: extractedData.schedule,
-            isDeleted: extractedData.isDeleted,
-          };
-        })
-        .filter((task) => !task.isDeleted) || [];
+        return {
+          id: data.id,
+          title: extractedData.title,
+          uid: extractedData.uid,
+          startDate: parseDateFromDb(extractedData.startDate),
+          initialDate: parseDateFromDb(extractedData.initialDate),
+          color: extractedData.color,
+          schedule: extractedData.schedule,
+          isDeleted: extractedData.isDeleted,
+        };
+      }) || [];
 
     setTasks(tasks, recurringTasks);
   }, [tasksCollection, recurringTasksCollection, setTasks]);

@@ -61,7 +61,7 @@ export const TaskModal: FC<TaskModalProps> = ({
   const handleDeleteTask = async (mode: RecurringTaskActionMode) => {
     switch (mode) {
       case RecurringTaskActionMode.One: {
-        await deleteTask(task.id);
+        await deleteTask(task.id, task.date);
         break;
       }
       case RecurringTaskActionMode.All: {
