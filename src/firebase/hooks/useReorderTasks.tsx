@@ -19,7 +19,11 @@ export const useReorderTasks = () => {
         const batch = writeBatch(db);
 
         if (source.droppableId === destination.droppableId) {
-          const tasks = tasksMap.get(source.droppableId) || [];
+          const tasks = (tasksMap.get(source.droppableId) || [])
+            .filter((task) => !task.isDeleted)
+            .sort((a, b) => a.sortingIndex - b.sortingIndex);
+
+          console.log(tasks);
 
           const reorderedPlans = reorderPlans(
             tasks,
