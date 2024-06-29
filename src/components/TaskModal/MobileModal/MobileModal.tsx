@@ -53,7 +53,7 @@ export const MobileModal: FC<TaskModalProps> = ({
       textarea.style.height = "auto";
       textarea.style.height = `${textarea.scrollHeight}px`;
     }
-  }, [newTitle]);
+  }, [textareaRef, newTitle]);
 
   const colors = Object.keys(ColorEnum).map((color) => color.toLowerCase());
   const scheduleOptions = Object.keys(Schedule).map((schedule) =>
