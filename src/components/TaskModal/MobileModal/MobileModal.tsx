@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import s from "./MobileModal.module.css";
 import {
   Button,
@@ -7,6 +7,7 @@ import {
   Field,
   Input,
   Label,
+  Textarea,
 } from "@headlessui/react";
 import { Calendar } from "../../../icons/Calendar";
 import {
@@ -43,6 +44,16 @@ export const MobileModal: FC<TaskModalProps> = ({
     useState<boolean>(false);
 
   const [newTitle, setNewTitle] = useState<string>(title);
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  }, [newTitle]);
 
   const colors = Object.keys(ColorEnum).map((color) => color.toLowerCase());
   const scheduleOptions = Object.keys(Schedule).map((schedule) =>
@@ -85,12 +96,13 @@ export const MobileModal: FC<TaskModalProps> = ({
               </Button>
             </div>
             <div className={s.inputSection}>
-              <Input
+              <Textarea
+                ref={textareaRef}
                 className={classNames(s.input, {
                   [s.checked]: isCompleted,
                 })}
                 autoFocus
-                type="text"
+                rows={1}
                 value={newTitle}
                 onChange={(e) => {
                   setNewTitle(e.target.value);

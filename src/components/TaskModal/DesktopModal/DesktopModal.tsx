@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import s from "./DesktopModal.module.css";
 import {
   Button,
@@ -10,6 +10,7 @@ import {
   Popover,
   PopoverButton,
   PopoverPanel,
+  Textarea,
 } from "@headlessui/react";
 import { Calendar } from "../../../icons/Calendar";
 import {
@@ -41,6 +42,16 @@ export const DesktopModal: FC<TaskModalProps> = ({
   onClose,
 }) => {
   const [newTitle, setNewTitle] = useState<string>(title);
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  }, [newTitle]);
 
   const colors = Object.keys(ColorEnum).map((color) => color.toLowerCase());
   const scheduleOptions = Object.keys(Schedule).map((schedule) =>
@@ -139,12 +150,13 @@ export const DesktopModal: FC<TaskModalProps> = ({
                 </div>
               </div>
             </div>
-            <Input
+            <Textarea
+              ref={textareaRef}
               className={classNames(s.input, {
                 [s.checked]: isCompleted,
               })}
               autoFocus
-              type="text"
+              rows={1}
               value={newTitle}
               onChange={(e) => {
                 setNewTitle(e.target.value);
