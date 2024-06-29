@@ -12,6 +12,7 @@ import {
   formatWeekdayForPlansList,
 } from "../../utils/dateFormatting";
 import { Droppable } from "@hello-pangea/dnd";
+import { useCalendarStore } from "../../state/useCalendar";
 dayjs.extend(isToday);
 
 type PlansListProps = {
@@ -27,6 +28,8 @@ export const PlansList: FC<PlansListProps> = ({
 }) => {
   const tasksMap = useTasksStore((state) => state.tasksMap);
 
+  const monday = useCalendarStore((state) => state.monday);
+
   const plans = (tasksMap.get(formatDateForDb(date)) || []).filter(
     (task) => !task.isDeleted
   );
@@ -35,9 +38,14 @@ export const PlansList: FC<PlansListProps> = ({
 
   useEffect(() => {
     if (date.isToday()) {
-      plansListRef.current?.scrollIntoView();
+      setTimeout(function () {
+        plansListRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
     }
-  }, []);
+  }, [monday]);
 
   return (
     <div ref={plansListRef} className={s.listContainer}>
