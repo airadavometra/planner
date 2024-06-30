@@ -30,9 +30,9 @@ export const PlansList: FC<PlansListProps> = ({
 
   const monday = useCalendarStore((state) => state.monday);
 
-  const plans = (tasksMap.get(formatDateForDb(date)) || []).filter(
-    (task) => !task.isDeleted
-  );
+  const plans = (tasksMap.get(formatDateForDb(date)) || [])
+    .filter((task) => !task.isDeleted)
+    .sort((a, b) => a.sortingIndex - b.sortingIndex);
 
   const plansListRef = useRef<HTMLDivElement>(null);
 

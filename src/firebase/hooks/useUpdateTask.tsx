@@ -24,7 +24,9 @@ export const useUpdateTask = () => {
   const completeTask = useCallback(
     async (taskId: string, date: Dayjs, isCompleted: boolean) => {
       if (user) {
-        const tasks = tasksMap.get(formatDateForDb(date)) || [];
+        const tasks = (tasksMap.get(formatDateForDb(date)) || [])
+          .filter((task) => !task.isDeleted)
+          .sort((a, b) => a.sortingIndex - b.sortingIndex);
 
         const taskIndex = tasks.indexOf(
           tasks.find((task) => task.id === taskId)!
@@ -231,13 +233,17 @@ export const useUpdateTask = () => {
   const changeDate = useCallback(
     async (taskId: string, oldDate: Dayjs, newDate: Dayjs) => {
       if (user) {
-        const oldDayTasks = tasksMap.get(formatDateForDb(oldDate)) || [];
+        const oldDayTasks = (tasksMap.get(formatDateForDb(oldDate)) || [])
+          .filter((task) => !task.isDeleted)
+          .sort((a, b) => a.sortingIndex - b.sortingIndex);
 
         const taskIndex = oldDayTasks.indexOf(
           oldDayTasks.find((task) => task.id === taskId)!
         );
 
-        const newDayTasks = tasksMap.get(formatDateForDb(newDate)) || [];
+        const newDayTasks = (tasksMap.get(formatDateForDb(newDate)) || [])
+          .filter((task) => !task.isDeleted)
+          .sort((a, b) => a.sortingIndex - b.sortingIndex);
 
         const [oldDayTasksMoved, newDayTasksMoved] = moveTaskToAnotherDay(
           oldDayTasks,

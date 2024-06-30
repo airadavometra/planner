@@ -17,21 +17,21 @@ export const useAddNewTask = () => {
       const trimmedTitle = title.trim();
 
       if (user && trimmedTitle.length > 0) {
-        const newTask = getDefaultTask(trimmedTitle, user.uid, date, 0);
+        const tasks = (tasksMap.get(formatDateForDb(date)) || [])
+          .filter((task) => !task.isDeleted)
+          .sort((a, b) => a.sortingIndex - b.sortingIndex);
 
-        const tasks = tasksMap.get(formatDateForDb(date)) || [];
+        const newTask = getDefaultTask(
+          trimmedTitle,
+          user.uid,
+          date,
+          tasks.length
+        );
 
         const batch = writeBatch(db);
 
         const newTaskRef = doc(collection(db, TASKS_COLLECTION_NAME));
         batch.set(newTaskRef, newTask);
-
-        for (let index = 0; index < tasks.length; index++) {
-          const itemRef = doc(db, TASKS_COLLECTION_NAME, tasks[index].id);
-          batch.update(itemRef, {
-            sortingIndex: index + 1,
-          });
-        }
 
         await batch.commit();
       }

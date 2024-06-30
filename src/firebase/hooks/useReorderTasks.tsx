@@ -19,7 +19,9 @@ export const useReorderTasks = () => {
         const batch = writeBatch(db);
 
         if (source.droppableId === destination.droppableId) {
-          const tasks = tasksMap.get(source.droppableId) || [];
+          const tasks = (tasksMap.get(source.droppableId) || [])
+            .filter((task) => !task.isDeleted)
+            .sort((a, b) => a.sortingIndex - b.sortingIndex);
 
           const reorderedPlans = reorderPlans(
             tasks,
@@ -39,8 +41,12 @@ export const useReorderTasks = () => {
             });
           }
         } else {
-          const sourcePlans = tasksMap.get(source.droppableId) || [];
-          const destinationPlans = tasksMap.get(destination.droppableId) || [];
+          const sourcePlans = (tasksMap.get(source.droppableId) || [])
+            .filter((task) => !task.isDeleted)
+            .sort((a, b) => a.sortingIndex - b.sortingIndex);
+          const destinationPlans = (tasksMap.get(destination.droppableId) || [])
+            .filter((task) => !task.isDeleted)
+            .sort((a, b) => a.sortingIndex - b.sortingIndex);
 
           const [sourcePlansMoved, destinationPlansMoved] =
             moveTaskToAnotherDay(

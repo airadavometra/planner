@@ -21,7 +21,9 @@ export const useDeleteTask = () => {
   const deleteTask = useCallback(
     async (taskId: string, date: Dayjs) => {
       if (user) {
-        const tasks = tasksMap.get(formatDateForDb(date)) || [];
+        const tasks = (tasksMap.get(formatDateForDb(date)) || [])
+          .filter((task) => !task.isDeleted)
+          .sort((a, b) => a.sortingIndex - b.sortingIndex);
 
         const batch = writeBatch(db);
 
@@ -70,7 +72,9 @@ export const useDeleteTask = () => {
               sortingIndex: -1,
             });
 
-            const tasks = tasksMap.get(formatDateForDb(task.date)) || [];
+            const tasks = (tasksMap.get(formatDateForDb(task.date)) || [])
+              .filter((task) => !task.isDeleted)
+              .sort((a, b) => a.sortingIndex - b.sortingIndex);
 
             const otherTasks = tasks.filter((t) => t.id !== task.id);
 
@@ -120,7 +124,9 @@ export const useDeleteTask = () => {
               sortingIndex: -1,
             });
 
-            const tasks = tasksMap.get(formatDateForDb(task.date)) || [];
+            const tasks = (tasksMap.get(formatDateForDb(task.date)) || [])
+              .filter((task) => !task.isDeleted)
+              .sort((a, b) => a.sortingIndex - b.sortingIndex);
 
             const otherTasks = tasks.filter((t) => t.id !== task.id);
 

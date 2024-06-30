@@ -105,7 +105,9 @@ const populateWeekWithRecurringTasks = async (
       const newTaskRef = doc(collection(db, TASKS_COLLECTION_NAME));
       batch.set(newTaskRef, newTask);
 
-      const otherTasks = tasksMap.get(newTask.date) || [];
+      const otherTasks = (tasksMap.get(newTask.date) || [])
+        .filter((task) => !task.isDeleted)
+        .sort((a, b) => a.sortingIndex - b.sortingIndex);
 
       for (let index = 0; index < otherTasks.length; index++) {
         const itemRef = doc(db, TASKS_COLLECTION_NAME, otherTasks[index].id);

@@ -12,9 +12,13 @@ import { TASKS_COLLECTION_NAME } from "../constants";
 const moveUnfinishedTasks = async (tasksMap: Map<string, Task[]>) => {
   const yesterday = dayjs().add(-1, "day");
 
-  const yesterdayTasks = tasksMap.get(formatDateForDb(yesterday)) || [];
+  const yesterdayTasks = (tasksMap.get(formatDateForDb(yesterday)) || [])
+    .filter((task) => !task.isDeleted)
+    .sort((a, b) => a.sortingIndex - b.sortingIndex);
 
-  const todayTasks = tasksMap.get(formatDateForDb(dayjs())) || [];
+  const todayTasks = (tasksMap.get(formatDateForDb(dayjs())) || [])
+    .filter((task) => !task.isDeleted)
+    .sort((a, b) => a.sortingIndex - b.sortingIndex);
 
   if (yesterdayTasks && yesterdayTasks.length > 0) {
     const batch = writeBatch(db);
