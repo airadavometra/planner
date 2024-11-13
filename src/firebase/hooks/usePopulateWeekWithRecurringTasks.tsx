@@ -31,25 +31,13 @@ function shouldCreateTaskForDay(date: Dayjs, recTask: RecurringTask): boolean {
         return weeksDiff % 2 === 0 && date.day() === startDate.day();
       }
       case "monthly": {
-        const isLastDayOfStartMonth = isLastDayOfMonth(startDate);
-
-        // Check for February edge case
-        if (startDate.date() > 28) {
-          const startMonthDays = startDate.daysInMonth();
-          const dateMonthDays = date.daysInMonth();
-          if (
-            startMonthDays > 28 &&
-            dateMonthDays < startMonthDays &&
-            dateMonthDays >= date.date()
-          ) {
-            return true;
-          }
+        if (date.date() === startDate.date()) {
+          return true;
         }
-
-        return (
-          date.date() === startDate.date() ||
-          (isLastDayOfStartMonth && isLastDayOfMonth(date))
-        );
+        if (startDate.date() > date.daysInMonth() && isLastDayOfMonth(date)) {
+          return true;
+        }
+        return false;
       }
       case "yearly":
         return (
